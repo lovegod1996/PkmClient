@@ -74,7 +74,7 @@ public class ParkEngineImpl implements ParkEngine {
         HttpClientUtil util=new HttpClientUtil();
         Map<String,Object> params=new HashMap<String,Object>();
         params.put("pname",Pname);
-        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.HELP,params);
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.PARKDETAIL,params);
 
         //数据处理，检验数据是否回复正常
         try {

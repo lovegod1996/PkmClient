@@ -1,10 +1,13 @@
 package com.example.prmgclient.bean;
 
+import java.io.Serializable;
+
 /**
  * Author: lovegod
  * Created by 123 on 2016/11/9.
  */
-public class ParkDetail {
+public class ParkDetail implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int Pid;
     private String Pname;
     private String adress;
