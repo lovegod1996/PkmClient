@@ -18,14 +18,14 @@ public class GetlocationJson {
 				ii--;
 				try {
 					document = Jsoup.connect(BootURL).userAgent(userAgent)
-							.timeout(30000).get();
+							.timeout(300000).get();
 				} catch (HttpStatusException htp) {
 					// htp.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			System.out.println("=========��ȡ�ɹ�========");
+			System.out.println("=========连接成功=======");
 			return document;
 		}
 
@@ -49,6 +49,7 @@ public class GetlocationJson {
 	        System.err.println(addrUrl);
 	      String addrJson=null;
 	       Document doc=getDoc(addrUrl);
+			System.out.println(doc==null);
 	    	addrJson=doc.select("body").html().replaceAll("&quot;", "\"");
 	    System.out.println(addrJson);
 	           return addrJson;      

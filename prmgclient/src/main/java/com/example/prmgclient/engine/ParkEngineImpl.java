@@ -74,6 +74,7 @@ public class ParkEngineImpl implements ParkEngine {
         HttpClientUtil util=new HttpClientUtil();
         Map<String,Object> params=new HashMap<String,Object>();
         params.put("pname",Pname);
+        System.out.println("查询停车场名："+Pname);
         String json=util.sendPost(ConstantValue.COMMON+ConstantValue.PARKDETAIL,params);
 
         //数据处理，检验数据是否回复正常
@@ -81,8 +82,9 @@ public class ParkEngineImpl implements ParkEngine {
             JSONObject object=new JSONObject(json);
             if(checkError(object)){
                 //幫助數據處理
+                System.out.println(object);
                 parkDetail=new ParkDetail();
-                String parkDetailstr=  object.getString("helplist");//[{....},{.....}]
+                String parkDetailstr=  object.getString("parkdetail");//[{....},{.....}]
                 /**
                  * 使用alibaba。jar包控件
                  */

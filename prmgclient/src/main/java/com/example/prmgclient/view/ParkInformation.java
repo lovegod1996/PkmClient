@@ -51,6 +51,7 @@ public class ParkInformation extends  TitlebarActivity {
                 ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
                 try {
                     ParkDetail parkDeatil=parkEngineImpl.getParkDetailByName(pname);
+                    System.out.println(parkDeatil);
                     Intent intent=new Intent(ParkInformation.this, ParkInformation_self.class);
                     Bundle bundle=new Bundle();
                     bundle.putSerializable("parkdetail",parkDeatil);

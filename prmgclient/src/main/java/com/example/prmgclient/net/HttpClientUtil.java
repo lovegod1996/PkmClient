@@ -94,6 +94,7 @@ public class HttpClientUtil {
 			List<BasicNameValuePair> parameters=new ArrayList<BasicNameValuePair>();
 			for(Map.Entry<String,Object> item:params.entrySet()){
 				BasicNameValuePair pair=new BasicNameValuePair(item.getKey(),item.getValue().toString());
+				System.out.println(item.getKey()+"  "+item.getValue());
 				parameters.add(pair);
 			}
 			UrlEncodedFormEntity entity = null;

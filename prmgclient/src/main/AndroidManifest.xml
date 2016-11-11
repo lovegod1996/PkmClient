@@ -32,6 +32,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.ParkInformation">
+        </activity>
+        <activity android:name=".view.ParkInformation_self"></activity>
     </application>
 
 </manifest>
