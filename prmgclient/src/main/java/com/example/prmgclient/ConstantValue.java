@@ -38,6 +38,13 @@ public interface ConstantValue {
 
 	String PARKLIST="/parklist";
 
+	String LOGIN="/login";
+
+	String REGISTER="/register";
+
+	String RECORD="/record";
+
+	String FINDUSERBYNAME="/finduerbyname";
 
 	//检查服务器返回数据错误
 	String ERROR="error";

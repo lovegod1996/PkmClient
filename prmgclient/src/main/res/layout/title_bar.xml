@@ -24,8 +24,8 @@
         android:drawableLeft="@mipmap/turn_left"
         android:drawablePadding="6dp"  
         android:ellipsize="end"  
-        android:gravity="center"  
-        android:onClick="onClick"  
+        android:gravity="center"
+        android:onClick="onClick"
         android:paddingLeft="5dp"  
         android:singleLine="true"    
         android:textColor="#ffffffff"  
@@ -33,7 +33,7 @@
         android:visibility="visible" />  
   
     <Button  
-        android:id="@+id/button_other"  
+        android:id="@+id/button_other"
         android:layout_width="60dp"  
         android:layout_height="match_parent"  
         android:layout_alignParentRight="true"  
@@ -41,8 +41,8 @@
         android:drawableRight="@mipmap/title_bar_person"
         android:drawablePadding="6dp"  
         android:ellipsize="end"  
-        android:gravity="center"   
-        android:onClick="onClick"  
+        android:gravity="center"
+        android:onClick="onClick"
         android:paddingLeft="5dp"  
         android:singleLine="true"  
       android:layout_marginRight="10dp"

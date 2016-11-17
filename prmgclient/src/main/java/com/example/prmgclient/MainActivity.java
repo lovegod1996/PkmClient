@@ -14,9 +14,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
@@ -32,11 +34,15 @@ import com.example.prmgclient.bean.ParkName;
 import com.example.prmgclient.engine.ParkEngineImpl;
 import com.example.prmgclient.util.GetlocationJson;
 import com.example.prmgclient.util.WifiAutoConnectManager;
-import com.example.prmgclient.view.ParkInformation;
+import com.example.prmgclient.view.account.Account_information;
+import com.example.prmgclient.view.park.ParkInformation;
+import com.example.prmgclient.view.record.PayMoney;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
@@ -46,13 +52,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.GONE;
+import static android.view.View.OnClickListener;
 
 public class MainActivity extends AppCompatActivity {
     //主界面四个主要按钮
@@ -64,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
     WifiManager wifiManager;
     WifiAutoConnectManager wac;//
     Bitmap bitmap;
-    Button back;
-    Button other;
     WifiInfo wifiInfo;
 
     static SharedPreferences sp;
@@ -85,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imgnight;
     private TextView temp1_1;
     private TextView current_date2;
+    private Button back;
+    private Button other;
+    private TextView title;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -92,20 +107,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (android.os.Build.VERSION.SDK_INT > 9) {
+        if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
         init();
-        image_park_information.setOnClickListener(new View.OnClickListener() {
+        image_park_information.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
+                ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
                 try {
-                    List<ParkName> parklist=parkEngineImpl.getParkNameList();
-                    Intent intent=new Intent(MainActivity.this, ParkInformation.class);
-                   // intent.putExtra("parklist", parklist);
-                   Bundle bundle=new Bundle();
+                    List<ParkName> parklist = parkEngineImpl.getParkNameList();
+                    Intent intent = new Intent(MainActivity.this, ParkInformation.class);
+                    // intent.putExtra("parklist", parklist);
+                    Bundle bundle = new Bundle();
                     bundle.putSerializable("parklist", (Serializable) parklist);
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -114,6 +129,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        /**
+         * 获取停车记录
+         */
+        imagepay_money.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent=new Intent(MainActivity.this,PayMoney.class);
+                startActivity(intent);
+            }
+        });
+
+        other.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,Account_information.class);
+                startActivity(intent);
+            }
+        });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void init() {
@@ -138,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
         temp2Text = (TextView) findViewById(R.id.temp2);
         currentDateText = (TextView) findViewById(R.id.current_date);
 
+
+
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.parking_info);
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.mipmap.in_out);
         Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.mipmap.payment_money1);
@@ -150,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
         back = (Button) findViewById(R.id.button_back);
         other = (Button) findViewById(R.id.button_other);
-        back.setVisibility(View.GONE);
+        back.setVisibility(GONE);
 
         if (NetIsConnect(MainActivity.this)) {
             if (this.GpsIsOpen()) {
@@ -178,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String ccode = null;
                 try {
-                    ccode = java.net.URLEncoder.encode(cityname);
+                    ccode = URLEncoder.encode(cityname);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -201,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-	/*
+    /*
 	 * 显示天气信息在界面上
 	 */
                     try {
@@ -223,31 +263,35 @@ public class MainActivity extends AppCompatActivity {
                             byte[] data = getImage(jobweather.getString("dayPictureUrl"));
                             if (data != null) {
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// bitmap
+                                if(bitmap==null){
+                                    System.out.println("获取团片数据为空");
+                                    bitmap=BitmapFactory.decodeStream(getStream(jobweather.getString("dayPictureUrl")));
+                                }
                                 imgday.setImageBitmap(bitmap);// display image
-
                             } else {
                                 Toast.makeText(MainActivity.this, "Image error!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
-                            //  Toast.makeText(MainActivity.this,"Newwork error!", 1).show();
-                            //  e.printStackTrace();
-
+                              Toast.makeText(MainActivity.this,"Network error!", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
                         }
-//获取图片链接显示
+                        //获取图片链接显示
 
                         try {
                             byte[] data = getImage(jobweather.getString("nightPictureUrl"));
                             if (data != null) {
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);// bitmap
+                                if(bitmap==null){
+                                    System.out.println("获取团片数据为空");
+                                    bitmap=BitmapFactory.decodeStream(getStream(jobweather.getString("nightPictureUrl")));
+                                }
                                 imgnight.setImageBitmap(bitmap);// display image
                             } else {
-                                //  Toast.makeText(MainActivity.this, "Image error!", 1).show();
-                                System.out.println("null");
+                                  Toast.makeText(MainActivity.this, "Image error!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
-                            // Toast.makeText(MainActivity.this,"Newwork error!", 1).show();
-                            // e.printStackTrace();
-                            System.out.println("null");
+                             Toast.makeText(MainActivity.this,"Network error!", Toast.LENGTH_SHORT).show();
+                             e.printStackTrace();
                         }
                         temp1Text.setText(jobweather.getString("temperature"));
                         temp2Text.setText(jobweather.getString("wind"));
@@ -256,28 +300,22 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-	/*	Intent intent=getIntent();
-    if(intent !=null)
-    {
-        byte [] bis=intent.getByteArrayExtra("bitmap");
-        Bitmap bitmap=BitmapFactory.decodeByteArray(bis, 0, bis.length);
-        img.setImageBitmap(bitmap);
-    }  */
                 }
             } else {
-                temp1_1.setVisibility(View.GONE);
+               temp1_1.setVisibility(GONE);
                 wrong.setText("请开启GPS！");
 
                 //Toast.makeText(this, "请开启GPS！", Toast.LENGTH_SHORT).show();
             }
         } else {
-            temp1_1.setVisibility(View.GONE);
+            temp1_1.setVisibility(GONE);
             wrong.setText("请开启数据！");
             //Toast.makeText(this, "请开启数据！", Toast.LENGTH_SHORT).show();
         }
 
 
     }
+
     /**
      * 网络查询
      */
@@ -290,24 +328,32 @@ public class MainActivity extends AppCompatActivity {
                 result = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
                 return result;
             }
-        } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            result = "网络异常！";
-            return result;
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            result = "网络异常！";
-            return result;
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;
     }
+
+    /**
+     * 根据连接获取输入流
+     * @param path
+     * @return
+     */
+    public  static InputStream getStream(String path) throws Exception {
+        URL url = new URL(path);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(5 * 1000);
+        conn.setRequestMethod("GET");
+        InputStream inStream = conn.getInputStream();
+        if (conn.getResponseCode() == 200) {
+            return inStream;
+        }
+        return  null;
+}
     /**
      * Get image from newwork
+     *
      * @param path The path of image
      * @return
      * @throws Exception
@@ -324,9 +370,9 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public static ArrayList<String> SplitS(String str){
-        String[] ss= str.split("\\(");
-        ArrayList<String>  list=new ArrayList<String>();
+    public static ArrayList<String> SplitS(String str) {
+        String[] ss = str.split("\\(");
+        ArrayList<String> list = new ArrayList<String>();
         for (String string : ss) {
             list.add(string);
         }
@@ -335,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Get data from stream
+     *
      * @param inStream
      * @return
      * @throws Exception
@@ -377,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
 
     public Boolean GpsIsOpen() {
         LocationManager alm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        if (alm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+        if (alm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             return true;
         } else {
             return false;
@@ -429,6 +476,7 @@ public class MainActivity extends AppCompatActivity {
                 locationListener);
         return cityName;
     }
+
     /**
      * 方位改变时触发，进行调用
      */
@@ -451,29 +499,23 @@ public class MainActivity extends AppCompatActivity {
      * 判断网络是否打开
      */
 
-    public boolean NetIsConnect(Activity activity){
+    public boolean NetIsConnect(Activity activity) {
         Context context = activity.getApplicationContext();
         // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (connectivityManager == null)
-        {
+        if (connectivityManager == null) {
             return false;
-        }
-        else
-        {
+        } else {
             // 获取NetworkInfo对象
             NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
 
-            if (networkInfo != null && networkInfo.length > 0)
-            {
-                for (int i = 0; i < networkInfo.length; i++)
-                {
+            if (networkInfo != null && networkInfo.length > 0) {
+                for (int i = 0; i < networkInfo.length; i++) {
                     System.out.println(i + "===状态===" + networkInfo[i].getState());
                     System.out.println(i + "===类型===" + networkInfo[i].getTypeName());
                     // 判断当前网络状态是否为连接状态
-                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED)
-                    {
+                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
                         return true;
                     }
                 }
@@ -483,14 +525,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //返回当前连接得wifi名
-    private String getConnectWifiSsid(){
+    private String getConnectWifiSsid() {
         WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         Log.d("wifiInfo", wifiInfo.toString());
-        Log.d("SSID",wifiInfo.getSSID());
+        Log.d("SSID", wifiInfo.getSSID());
         return wifiInfo.getSSID();
     }
-      //判断是否成功连上wifi
+    //判断是否成功连上wifi
 
     public boolean isWifiConnect() {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -499,5 +541,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 }

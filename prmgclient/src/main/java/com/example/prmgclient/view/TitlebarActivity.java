@@ -1,90 +1,98 @@
 package com.example.prmgclient.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.prmgclient.R;
+import com.example.prmgclient.view.account.Account_information;
 
-public class TitlebarActivity extends Activity implements OnClickListener {
-	  RelativeLayout mContentLayout;
+public class TitlebarActivity extends Activity  {
+	  FrameLayout mContentLayout;
 	  Button back;
 	  Button other;
 	  TextView t_title;
-	  
-	  
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {  
-        case R.id.button_back:  
-            onBackward(v);  
-            break;  
-
-        case R.id.button_other:  
-            onForward(v);  
-            break;  
-
-        default:  
-            break;  
-    }  
-	}
-	
-	private void onForward(View v) {
-		// TODO Auto-generated method stub
-	//	Intent intent=new Intent(TitlebarActivity.this,Account_information.class);
-	//	startActivity(intent);
-	}
-
-	private void onBackward(View v) {
-		// TODO Auto-generated method stub
-		finish();
-	}
 
 	@Override  
     protected void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        setupViews();   //���� title_bar ���� ������ȡ���⼰���ఴť  
+        setupViews();//加载 activity_title 布局 ，并获取标题及两侧按钮
+     back.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             finish();
+         }
+     });
+        other.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(TitlebarActivity.this,Account_information.class);
+                startActivity(intent);
+            }
+        });
     }
 
 	private void setupViews() {
 		// TODO Auto-generated method stub
-		super.setContentView(R.layout.title_bar);
+		super.setContentView(R.layout.actitvity_title);
 		t_title = (TextView) findViewById(R.id.text_title);         
         back = (Button) findViewById(R.id.button_back);  
         other = (Button) findViewById(R.id.button_other); 
-        mContentLayout = (RelativeLayout) findViewById(R.id.relativelayout_main); 
-	}  
-	
-  
-    //���ñ�������  
-    @Override  
-    public void setTitle(int titleId) {  
-    	t_title.setText(titleId);  
-    }  
-  
-    //���ñ�������  
-    @Override  
-    public void setTitle(CharSequence title) {  
-    	t_title.setText(title);  
-    }  
-  
-    //���ñ���������ɫ  
-    @Override  
-    public void setTitleColor(int textColor) {  
-    	t_title.setTextColor(textColor);  
-    }  
-    
-    @Override  
-    public void setContentView(View view) {  
-        mContentLayout.removeAllViews();  
-        mContentLayout.addView(view);  
-        onContentChanged();  
-    }  
-     
+        mContentLayout = (FrameLayout) findViewById(R.id.layout_content);
+	}
+
+
+
+
+
+    @Override
+    public void setTitle(CharSequence title) {
+        super.setTitle(title);
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        super.setTitle(titleId);
+    }
+
+    @Override
+    public void setTitleColor(int textColor) {
+        super.setTitleColor(textColor);
+    }
+
+    @Override
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        mContentLayout.removeAllViews();
+        mContentLayout.addView(view, params);
+        onContentChanged();
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        mContentLayout.removeAllViews();
+        View.inflate(this, layoutResID, mContentLayout);
+        onContentChanged();
+    }
+
+    @Override
+    public void setContentView(View view) {
+        mContentLayout.removeAllViews();
+        mContentLayout.addView(view);
+        onContentChanged();
+    }
+
+    private void onForward(View view) {
+        Intent intent=new Intent(TitlebarActivity.this,Account_information.class);
+        startActivity(intent);
+    }
+
+    private void onBackward(View view) {
+        finish();
+    }
 }
 

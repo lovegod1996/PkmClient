@@ -24,17 +24,33 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme"
+
+        >
+
+        <activity android:name=".MainActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ParkInformation">
-        </activity>
-        <activity android:name=".view.ParkInformation_self"></activity>
+        <activity android:name=".view.park.ParkInformation"></activity>
+        <activity android:name=".view.park.ParkInformation_self"></activity>
+        <activity android:name=".view.account.Account_information"></activity>
+        <activity android:name=".view.account.LoginActivity"></activity>
+        <activity android:name=".view.account.pre_registerActivity"></activity>
+        <activity android:name=".view.account.RegisterActivity"></activity>
+        <activity android:name=".view.record.PayMoney"></activity>
+        <activity android:name=".view.record.PayMoney_self"></activity>
+        <activity android:name=".view.account.Account_manage"></activity>
+        <activity android:name=".view.TitlebarActivity"  />
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
