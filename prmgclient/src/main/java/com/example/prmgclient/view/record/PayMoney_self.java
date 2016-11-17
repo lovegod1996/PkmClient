@@ -2,7 +2,11 @@ package com.example.prmgclient.view.record;
 
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,7 +17,9 @@ import android.widget.TextView;
 
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.Record;
+import com.example.prmgclient.engine.RecordEngineImpl;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class PayMoney_self extends Activity{
+public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefreshListener{
 	
 	//ListView pay_records_list;
 	RelativeLayout simple;
@@ -39,7 +45,27 @@ public class PayMoney_self extends Activity{
 	Button back;
 	ListView list;
 
+	SharedPreferences sp ;
+	String name_nu;
+   private	SimpleAdapter simpleAdapter;
+	private SwipeRefreshLayout swipeLayout;
 	private static  List<Record> recordList;
+   private static  List<Map<String,Object>> listItems;
+
+	Handler handler=new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if(msg.what==5){
+				Bundle bundle=msg.getData();
+				List<Record> listRecord= (List<Record>) bundle.getSerializable("recordList");
+				listItems=getList(listRecord);
+               simpleAdapter.notifyDataSetChanged();
+				swipeLayout.setRefreshing(false);
+			}
+
+		}
+	};
 
      protected void onCreate(Bundle savedInstanceState){
     	  super.onCreate(savedInstanceState);
@@ -48,38 +74,13 @@ public class PayMoney_self extends Activity{
 
 		 recordList= (List<Record>) this.getIntent().getSerializableExtra("recordList");
    System.out.println(recordList);
-		 List<Map<String,Object>> listItems=getList(recordList);
+		 listItems=getList(recordList);
 
-  /*  	  Intent intent = getIntent();
-		  String payString = intent.getStringExtra("payrecords").replace("payrecord;null;", ""); 
-		  System.out.println(payString);
-		  ArrayList<String> records=new ArrayList<String>();	
-		  
-		  records =SplitFenString(payString);
-		  List<Map<String,Object>> listItems=new ArrayList<Map<String,Object>>();
-		  
-		  for (String string : records) {
-			  String[] record=null;
-			  Map<String, Object> listItem=new HashMap<String, Object>();
-			  
-			  record=string.split("\\+");
-			
-				 listItem.put("parknames", record[0]);
-				  listItem.put("datas", record[1].replace(record[1].substring(record[1].indexOf(" ")), ""));
-				  String longtime=getlongtime(record[1], record[2]);
-				  listItem.put("pays", record[3]);
-				  listItem.put("starttime", getintime(record[1]));
-				  listItem.put("endtime", getintime(record[2]));
-				  listItem.put("times", longtime);
-				  System.out.println(listItem);
-				  listItems.add(listItem);  
-		}*/
-		  SimpleAdapter simpleAdapter=new SimpleAdapter(this, listItems, R.layout.simple_item, 
+		   simpleAdapter=new SimpleAdapter(this, listItems, R.layout.simple_item,
 				  new String[] {"parknames","datas","pays","starttime","endtime","times"}, 
                   new int[] {R.id.park_name,R.id.data,R.id.pay,R.id.time_start,R.id.time_end,R.id.time});
 		  list.setAdapter(simpleAdapter);
-	      
-		  
+
 		  back.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -124,31 +125,20 @@ public class PayMoney_self extends Activity{
 	      time=(TextView)findViewById(R.id.time);
 	      time_start=(TextView)findViewById(R.id.time_start);
 	      time_end=(TextView)findViewById(R.id.time_end);
+
+	    	sp = getSharedPreferences("userInfo", 0);
+	    	name_nu = sp.getString("USER_NAME",null);
 	      
 		  list=(ListView)findViewById(R.id.pay_records_list);
-		  list.setDivider(null); 
-	   
+		  list.setDivider(null);
+		  swipeLayout= (SwipeRefreshLayout) findViewById(R.id.id_swipe);
+	      swipeLayout.setOnRefreshListener(this);
+		swipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
+         swipeLayout.setDistanceToTriggerSync(400);
+		//swipeLayout.setSize(SwipeRefreshLayout.LARGE);
 	}
-	
-	 public static ArrayList<String> SplitString(String str){
-			String[] ss= str.split("\\+");
-			ArrayList<String>  list=new ArrayList<String>();
-			 for (String string : ss)
-			 {
-				list.add(string);
-			}
-			 return list;
-		 }
-	 
-	 public static ArrayList<String> SplitFenString(String StrConFen){
-		 String[] str=StrConFen.split(";");
-		 ArrayList<String> arraylist=new ArrayList<String>();
-		 for (String string : str) {
-			arraylist.add(string);
-		}
-		 return arraylist;
-		 
-	 }
+
 	  /*
 	   * ����ͣ��ʱ��
 	   * 
@@ -189,4 +179,27 @@ public class PayMoney_self extends Activity{
 		 
 	
 	 }
+
+	@Override
+	public void onRefresh() {
+
+		new Thread(){
+			@Override
+			public void run() {
+				RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
+				try {
+					List<Record> recordList=recordEngineImpl.getListRecord(name_nu);
+					Message msg=new Message();
+					msg.what=5;
+					Bundle bundle=new Bundle();
+					bundle.putSerializable("recordList", (Serializable) recordList);
+					msg.setData(bundle);
+					handler.sendMessage(msg);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		}.start();
+	}
 }
