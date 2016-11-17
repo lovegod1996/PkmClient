@@ -46,6 +46,7 @@ public interface ConstantValue {
 
 	String FINDUSERBYNAME="/finduerbyname";
 
+
 	//检查服务器返回数据错误
 	String ERROR="error";
 	/**

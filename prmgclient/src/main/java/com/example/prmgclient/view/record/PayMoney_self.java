@@ -2,7 +2,6 @@ package com.example.prmgclient.view.record;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +12,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.prmgclient.R;
+import com.example.prmgclient.bean.Record;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,12 +39,18 @@ public class PayMoney_self extends Activity{
 	Button back;
 	ListView list;
 
+	private static  List<Record> recordList;
+
      protected void onCreate(Bundle savedInstanceState){
     	  super.onCreate(savedInstanceState);
     	  setContentView(R.layout.payment_records);
     	  init();
-    	  
-    	  Intent intent = getIntent();  
+
+		 recordList= (List<Record>) this.getIntent().getSerializableExtra("recordList");
+   System.out.println(recordList);
+		 List<Map<String,Object>> listItems=getList(recordList);
+
+  /*  	  Intent intent = getIntent();
 		  String payString = intent.getStringExtra("payrecords").replace("payrecord;null;", ""); 
 		  System.out.println(payString);
 		  ArrayList<String> records=new ArrayList<String>();	
@@ -67,7 +73,7 @@ public class PayMoney_self extends Activity{
 				  listItem.put("times", longtime);
 				  System.out.println(listItem);
 				  listItems.add(listItem);  
-		}
+		}*/
 		  SimpleAdapter simpleAdapter=new SimpleAdapter(this, listItems, R.layout.simple_item, 
 				  new String[] {"parknames","datas","pays","starttime","endtime","times"}, 
                   new int[] {R.id.park_name,R.id.data,R.id.pay,R.id.time_start,R.id.time_end,R.id.time});
@@ -83,6 +89,23 @@ public class PayMoney_self extends Activity{
 			}
 		});
 }
+
+	private List<Map<String,Object>> getList(List<Record> recordList) {
+		List<Map<String,Object>> listItems=new ArrayList<Map<String,Object>>();
+		for (Record record: recordList){
+			Map<String, Object> listItem=new HashMap<String, Object>();
+			listItem.put("parknames", record.getPname());
+			listItem.put("datas", record.getIntime().replace(record.getIntime().substring(record.getIntime().indexOf(" ")), ""));
+			listItem.put("pays", record.getPay());
+			String longtime=getlongtime(record.getIntime(), record.getOuttime());
+			listItem.put("starttime", getintime(record.getIntime()));
+			listItem.put("endtime", getintime(record.getOuttime()));
+			listItem.put("times", longtime);
+			listItems.add(listItem);
+		}
+           return  listItems;
+	}
+
 
 	private void init() {
 		// TODO Auto-generated method stub

@@ -2,8 +2,11 @@ package com.example.prmgclient.view.record;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.prmgclient.R;
+import com.example.prmgclient.bean.Record;
+import com.example.prmgclient.engine.RecordEngineImpl;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class PayMoney extends Activity{
 TextView t_title;//������
@@ -20,36 +28,22 @@ TextView balance;
 View relativelayout_w3;
 View relativelayout_w4;
 
-
+	ProgressDialog progressDialog;
  SharedPreferences sp ;
  String name_nu;
-/*public void handlerMsg(){
-    handler=new Handler()
-         {
-         	@Override
-  			public void handleMessage(Message msg)
-  			{
-  				// �����Ϣ���������߳�
-  				if (msg.what == 0x123)
-  				{// ��ȡ������
-  					
- 					if(msg.obj.toString()!=null&&msg.obj.toString().contains("payrecord"))
-  					{	 
-  					
-  						 String record=msg.obj.toString();
-  						
-  						 Intent intent=new Intent(PayMoney.this,PayMoney_self.class);
-  						 intent.putExtra("payrecords",record);//����������תҳ��
-  						 startActivity(intent);	
-  						
-  					}
-  					
-  				}							
-  			}
-  		};    
-        clientThread = new ClientThread(handler);
-       	new Thread(clientThread).start();  	// �ͻ�������ClientThread�̴߳����������ӡ���ȡ���Է�����������          
-   } */
+	Handler handler=new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if(msg.what==4){
+				progressDialog.dismiss();
+                Bundle bundle=msg.getData();
+				Intent intent=new Intent(PayMoney.this,PayMoney_self.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		}
+	};
 
 	  protected void onCreate(Bundle savedInstanceState){  
 		 super.onCreate(savedInstanceState);
@@ -64,11 +58,27 @@ View relativelayout_w4;
 	 				try {
 	 					sp = getSharedPreferences("userInfo", 0);
 	 					name_nu = sp.getString("USER_NAME",null);
-	 					 
-	 				    Message msg = new Message();
-	 					msg.what = 0x345;
-	 					msg.obj = "payrecords;"+name_nu;
-	 				//	clientThread.revHandler.sendMessage(msg);
+
+						progressDialog=ProgressDialog.show(PayMoney.this,"请稍等","获取数据中..",true);
+						new Thread(){
+							@Override
+							public void run() {
+								RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
+								try {
+									List<Record> recordList=recordEngineImpl.getListRecord(name_nu);
+
+									Message msg=new Message();
+									msg.what=4;
+									Bundle bundle=new Bundle();
+									bundle.putSerializable("recordList", (Serializable) recordList);
+									msg.setData(bundle);
+                                    handler.sendMessage(msg);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+							}
+						}.start();
 	 			    } 
 	 	    	   catch (Exception e)
 	 	    	   {

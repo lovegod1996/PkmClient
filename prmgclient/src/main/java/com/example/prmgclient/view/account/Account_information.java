@@ -45,7 +45,6 @@ public class Account_information extends Activity {
 			super.handleMessage(msg);
 			if(msg.what==2){
 				progressDialog.dismiss();
-				User user= (User) msg.getData().getSerializable("user");
 				Bundle bundle=msg.getData();
 				Intent intent=new Intent(Account_information.this, Account_manage.class);
 				intent.putExtras(bundle);
