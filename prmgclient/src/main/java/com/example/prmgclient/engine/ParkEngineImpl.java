@@ -104,4 +104,68 @@ public class ParkEngineImpl implements ParkEngine {
 
         return null;
     }
+
+    @Override
+    public ParkDetail getParDetailkByWifiname(String wifiname) throws Exception {
+        ParkDetail parkDetail=null;
+
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("wifiname",wifiname);
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.FINDPARKBYWIFI,params);
+        JSONObject object=new JSONObject(json);
+        if(checkError(object)){
+            parkDetail=new ParkDetail();
+            String parkDetailStr=object.getString("parkdetail");
+            parkDetail= JSON.parseObject(parkDetailStr,ParkDetail.class);
+
+
+            return  parkDetail;
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean updateIn(String parkname) throws Exception {
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("parkname",parkname);
+
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.UPDATEPARKIN,params);
+        JSONObject object=new JSONObject(json);
+        if(checkError(object)){
+            String updateState=object.getString("updateState");
+            if(updateState.equals("true")){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateout(String parkname) throws Exception {
+
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("parkname",parkname);
+
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.UPDATEPARKOUT,params);
+        JSONObject object=new JSONObject(json);
+        if(checkError(object)){
+            String updateState=object.getString("updateState");
+            if(updateState.equals("true")){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+
+        }
+        return false;
+    }
 }

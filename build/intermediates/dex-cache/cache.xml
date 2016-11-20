@@ -106,7 +106,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="1b5b94fe32e587f01523080d6da267f66e0b507b">
+        sha1="6c2ce93ce37cea27d3355cf0352efbf91a3eee03">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_29c8a0e4700ab4725ebf0f7903b70ac0d0499b30\classes.dex" />
     </item>
     <item

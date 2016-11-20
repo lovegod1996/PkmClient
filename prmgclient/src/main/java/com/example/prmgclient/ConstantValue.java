@@ -46,6 +46,20 @@ public interface ConstantValue {
 
 	String FINDUSERBYNAME="/finduerbyname";
 
+	String FINDPARKBYWIFI="/findParkByWifiName";
+
+	String UPDATEPARKIN="/updatein";
+
+	String UPDATEPARKOUT="/updateout";
+
+	String GETINTIME="/getIntime";
+
+	String GETINRECORD="/getin";
+
+	String  GETOUTRECORD="/updatefee";
+
+	//定义wifi密码
+	String WIFIPSD="1234567890";
 
 	//检查服务器返回数据错误
 	String ERROR="error";

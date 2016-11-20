@@ -1,16 +1,24 @@
 package com.example.prmgclient.view.inorout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.R;
+import com.example.prmgclient.bean.ParkDetail;
+import com.example.prmgclient.engine.ParkEngineImpl;
+import com.example.prmgclient.engine.RecordEngineImpl;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -20,6 +28,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class GateInOut extends Activity {
@@ -48,12 +58,13 @@ public class GateInOut extends Activity {
 	static String name_number;
 
 	String save_time;
+	double pay;
 	/**
 	 * ATTENTION: This was auto-generated to implement the App Indexing API.
 	 * See https://g.co/AppIndexing/AndroidStudio for more information.
 	 */
 	private GoogleApiClient client;
-
+	private ProgressDialog progressDialog;
 /*public void handlerMsg(){
 	handler=new Handler()
          {
@@ -123,7 +134,57 @@ public class GateInOut extends Activity {
         clientThread = new ClientThread(handler);
        	new Thread(clientThread).start();  	// �ͻ�������ClientThread�̴߳����������ӡ���ȡ���Է�����������          
    } */
+Handler handler=new Handler(){
+	@Override
+	public void handleMessage(Message msg) {
+		super.handleMessage(msg);
+        switch (msg.what){
+			case 8:
+				progressDialog.dismiss();
+				AlertDialog.Builder builder =new AlertDialog.Builder(GateInOut.this);
+				builder.setTitle(pname);
+				//builder.setAdapter(new ArrayAdapter<String>(this, resource, textViewResourceId), null);
+				builder.setMessage(name_number+"\n"+"抬杆进场成功！"+"\n"+"时间:"+getNowtime());
+				builder.show();
+				Timer timer = new Timer();
+				TimerTask task=new TimerTask() {
 
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Intent intent=new Intent(GateInOut.this, MainActivity.class);
+						startActivity(intent);
+						GateInOut.this.finish();
+					}
+				};
+				timer.schedule(task, 1000 * 3);
+				break;
+			case 9:
+				progressDialog.dismiss();
+				AlertDialog.Builder builder1 =new AlertDialog.Builder(GateInOut.this);
+
+				builder1.setTitle(pname);
+				builder1.setMessage(name_number+"\n"+"抬杆出场成功！"+"\n"+"费用:"+pay+"  元"+"\n"+"出场时间："+getintime(save_time));
+				builder1.show();
+				Timer timer1 = new Timer();
+				TimerTask task1=new TimerTask() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Intent intent=new Intent(GateInOut.this, MainActivity.class);
+						startActivity(intent);
+						GateInOut.this.finish();
+					}
+				};
+				timer1.schedule(task1, 1000 * 3);
+
+				break;
+			default:
+				break;
+		}
+	}
+};
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -153,35 +214,39 @@ public class GateInOut extends Activity {
 		pa_left = (TextView) findViewById(R.id.pa_left);
 		in = (Button) findViewById(R.id.in);
 
-		Intent intent = getIntent();
-		String PI = intent.getStringExtra("pinfo");
+	    //	Intent intent = getIntent();
+		//String pi = intent.getStringExtra("inttime");
+
+		final ParkDetail parkDetail= (ParkDetail) this.getIntent().getSerializableExtra("parkdetail");
+		String pi=this.getIntent().getStringExtra("inttime");
 		//	String WIFI = intent.getStringExtra("wifiname");
 		//	String wifiQ = intent.getStringExtra("wifiq");
 		//	wifi_name.setText(WIFI);
 		//	wifi_du.setText(wifiQ);
 
-		ArrayList<String> pinfo = new ArrayList<String>();
-		pinfo = SplitString(PI);
-		pa_name.setText(pinfo.get(0));
-		pa_left.setText(pinfo.get(1) + "��");
+	//	ArrayList<String> pinfo = new ArrayList<String>();
+	//	pinfo = SplitString(PI);
 
-		pname = pinfo.get(0);   //��ȡͣ������
-		pcri = pinfo.get(2);    //��ȡͣ��������
-		intime = pinfo.get(3);   //��ȡ����ʱ��
+		pa_name.setText(parkDetail.getPname());
+		pa_left.setText(parkDetail.getParking_left()+ "个");
+
+		pname = parkDetail.getPname();   //��ȡͣ������
+		pcri = parkDetail.getPayCri();    //��ȡͣ��������
+		intime = pi;   //��ȡ����ʱ��
 
 
 		sp = getSharedPreferences("userInfo", 0);
-		//ȡ���ֻ�������
+		//取出手机号数据
 		name_number = sp.getString("USER_NAME", null);
 
 
 		we_name.setText(name_number);
 		pa_time2.setText(getintime(getNowtime()));
-		pa_standard2.setText(pcri + "Ԫ/Сʱ");
+		pa_standard2.setText(pcri + "元/小时");
 
 
-		// this.handlerMsg();
-		if (PI.contains("false")) {
+
+		if (intime.contains("null")) {
 			in.setText("进场");
 
 			in.setOnClickListener(new OnClickListener() {
@@ -196,6 +261,26 @@ public class GateInOut extends Activity {
 						msg.what = 0x345;
 						msg.obj = "getin;"+name_number+";"+pname+";"+getNowtime();
 						clientThread.revHandler.sendMessage(msg);*/
+						progressDialog=ProgressDialog.show(GateInOut.this,"正在抬杆","请稍等..",true);
+						new Thread(){
+							@Override
+							public void run() {
+								super.run();
+								ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
+								RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
+								try {
+									boolean upState=parkEngineImpl.updateIn(pname);
+									boolean inState=recordEngineImpl.getIn(name_number,pname,getNowtime());
+									if(upState&&inState){
+										handler.sendEmptyMessage(8);
+									}
+
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+							}
+						}.start();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -213,7 +298,7 @@ public class GateInOut extends Activity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub				
 					///����ʱ���㷨
-					double pay = CalPfees(intime, getNowtime(), pcri);
+					  pay = CalPfees(intime, getNowtime(), pcri);
 					save_time = getNowtime();
 					try {
 					   /* Message msg = new Message();
@@ -221,6 +306,26 @@ public class GateInOut extends Activity {
 					//	msg.obj = "getout;"+name_number+";"+pname+";"+getNowtime()+";"+pay;
 						msg.obj = "getout;"+name_number+";"+pname+";"+save_time+";"+pay;//----------------------
 						clientThread.revHandler.sendMessage(msg);*/
+						progressDialog=ProgressDialog.show(GateInOut.this,"正在抬杆","请稍等..",true);
+						new Thread(){
+							@Override
+							public void run() {
+								super.run();
+								ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
+								RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
+								try {
+									boolean upout=parkEngineImpl.updateout(pname);
+									boolean upfee=recordEngineImpl.updateFee(name_number,pay,save_time);
+									if(upfee&&upout){
+										handler.sendEmptyMessage(9);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+							}
+						}.start();
+
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

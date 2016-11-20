@@ -2,6 +2,7 @@ package com.example.prmgclient;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,21 +21,27 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.prmgclient.bean.ParkDetail;
 import com.example.prmgclient.bean.ParkName;
 import com.example.prmgclient.engine.ParkEngineImpl;
+import com.example.prmgclient.engine.RecordEngineImpl;
 import com.example.prmgclient.util.GetlocationJson;
 import com.example.prmgclient.util.WifiAutoConnectManager;
 import com.example.prmgclient.view.account.Account_information;
+import com.example.prmgclient.view.inorout.GateInOut;
 import com.example.prmgclient.view.park.ParkInformation;
 import com.example.prmgclient.view.record.PayMoney;
 import com.google.android.gms.appindexing.Action;
@@ -100,7 +107,22 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+private ProgressDialog progressDialog;
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what==7){
+                progressDialog.dismiss();
+                Bundle bundle=msg.getData();
+                String intime=msg.obj.toString();
+                Intent intent=new Intent(MainActivity.this, GateInOut.class);
+                intent.putExtras(bundle);
+                intent.putExtra("inttime",intime);
+                startActivity(intent);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +171,92 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        /**
+         * 进出场模块
+         */
+        image_gate_in_out.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sp = getSharedPreferences("userInfo", 0);
+                //取出手机号数据
+                name_number = sp.getString("USER_NAME",null);
+                String wifipwd="";//定义连接wifimima
+
+                if(isWifiOpen()){
+                    WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+                    wifiInfo = wifiManager.getConnectionInfo();
+                    wifiname=getWifiName();  //获取应该连接的wifi名，根据预设的wifi阀值
+                    if(isWifiConnect()){
+
+                    String nowwifi=getConnectWifiSsid().replaceAll("\"", "");   ///获取当前连接的wifi名
+                    if(wifiname==null){
+                        Toast toast = Toast.makeText(MainActivity.this, "未找到正确wifi", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }else{   //获取到应该连接wifi名
+                        if(wifiname.equals(nowwifi)){  //当前连接wifi名与应该连接的wifi名相同
+                            if(wifiInfo.getRssi()>-50){
+                                //执行进场操作
+                               //所要执行的操作内容：查询停车场信息，查询停车记录
+                                progressDialog= ProgressDialog.show(MainActivity.this,"请稍候","获取数据中..",true);
+                                 new Thread(){
+                                     @Override
+                                     public void run() {
+                                         ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
+                                         RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
+                                         try {
+                                             ParkDetail parkDetail=parkEngineImpl.getParDetailkByWifiname(wifiname);
+                                             String intime=recordEngineImpl.getInTime(name_number);
+
+                                             Message msg=new Message();
+                                             msg.what=7;
+                                             Bundle bundle=new Bundle();
+                                             bundle.putSerializable("parkdetail",parkDetail);
+                                             msg.setData(bundle);
+                                             msg.obj=intime;
+                                             handler.sendMessage(msg);
+                                         } catch (Exception e) {
+                                             e.printStackTrace();
+                                         }
+
+                                     }
+                                 }.start();
+                            }else{
+                                Toast toast1 = Toast.makeText(MainActivity.this, "Wifi 强度值不够，请再向前行驶", Toast.LENGTH_SHORT);
+                                toast1.setGravity(Gravity.CENTER, 0, 0);
+                                toast1.show();
+                            }
+                        }else{//连接应该连接的wifi
+                            wac.connect(wifiname, ConstantValue.WIFIPSD,ConstantValue.WIFIPSD.equals("")? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS: WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
+                            if(isWifiConnect()){
+                                Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
+                                toast1.setGravity(Gravity.CENTER, 0, 0);
+                                toast1.show();
+                            }
+
+                        }
+
+                    }
+                    }else{
+                        wac.connect(wifiname, ConstantValue.WIFIPSD,ConstantValue.WIFIPSD.equals("")? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS: WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
+                        if(isWifiConnect()){
+                            Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
+                            toast1.setGravity(Gravity.CENTER, 0, 0);
+                            toast1.show();
+                        }
+                    }
+                }else{
+                    //预设请求是否打开wifi
+                    wifiManager.setWifiEnabled(true);//打开wifi模块
+
+                    Toast toast = Toast.makeText(MainActivity.this, "wifi已打开！，请重试..", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+
+                }
+
+            }
+        });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -175,7 +283,9 @@ public class MainActivity extends AppCompatActivity {
         temp1Text = (TextView) findViewById(R.id.temp1);
         temp2Text = (TextView) findViewById(R.id.temp2);
         currentDateText = (TextView) findViewById(R.id.current_date);
-
+        imgday=(ImageView) findViewById(R.id.imageday);
+        imgnight=(ImageView) findViewById(R.id.imagenight);
+        temp1_1=(TextView) findViewById(R.id.temp1_1);
 
 
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.parking_info);
@@ -302,13 +412,13 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             } else {
-               temp1_1.setVisibility(GONE);
+               temp1_1.setVisibility(View.GONE);
                 wrong.setText("请开启GPS！");
 
                 //Toast.makeText(this, "请开启GPS！", Toast.LENGTH_SHORT).show();
             }
         } else {
-            temp1_1.setVisibility(GONE);
+            temp1_1.setVisibility(View.GONE);
             wrong.setText("请开启数据！");
             //Toast.makeText(this, "请开启数据！", Toast.LENGTH_SHORT).show();
         }
@@ -540,6 +650,19 @@ public class MainActivity extends AppCompatActivity {
         return mWifi.isConnected();
     }
 
+    /**
+     * 检查wifi模块是否开启
+     * @return
+     */
+    public boolean isWifiOpen(){
+        WifiManager wifimanager;
+        wifimanager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        if(wifimanager.isWifiEnabled()){
+            return  true;
+        }else{
+            return  false;
+        }
+    }
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.

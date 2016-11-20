@@ -45,6 +45,7 @@
         <activity android:name=".view.record.PayMoney"></activity>
         <activity android:name=".view.record.PayMoney_self"></activity>
         <activity android:name=".view.account.Account_manage"></activity>
+        <activity android:name=".view.inorout.GateInOut"></activity>
         <activity android:name=".view.TitlebarActivity"  />
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

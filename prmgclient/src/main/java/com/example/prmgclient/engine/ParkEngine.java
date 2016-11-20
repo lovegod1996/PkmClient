@@ -14,5 +14,10 @@ public interface ParkEngine {
     public List<ParkName> getParkNameList() throws  Exception;
    //根据停车场名获取停车场详细信息
     public ParkDetail getParkDetailByName(String Pname) throws  Exception;
-
+   //根据wifi名获取停车场
+    public ParkDetail getParDetailkByWifiname(String wifiname) throws  Exception;
+//车辆进场车位减少
+    public boolean updateIn(String parkname) throws  Exception;
+    //车辆出场车位加一
+    public boolean updateout(String parkname)throws  Exception;
 }

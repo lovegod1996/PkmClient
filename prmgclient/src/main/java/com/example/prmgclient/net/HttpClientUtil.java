@@ -17,6 +17,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
 import java.io.InputStream;
@@ -43,6 +44,11 @@ public class HttpClientUtil {
 		if (StringUtils.isNotBlank(GlobalParams.PROXY)) {
 			// 设置代理信息
 			HttpHost host = new HttpHost(GlobalParams.PROXY, GlobalParams.PORT);
+
+			// 请求超时
+			client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
+            // 读取超时
+			client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000    );
 			client.getParams()
 					.setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
 		}

@@ -36,6 +36,68 @@ public class RecordEngineImpl implements RecordEngine {
         return null;
     }
 
+    @Override
+    public boolean getIn(String username, String parkname, String intime) throws Exception {
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("username",username);
+        params.put("parkname",parkname);
+        params.put("intime",intime);
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.GETINRECORD,params);
+        JSONObject object=new JSONObject(json);
+        if(checkError(object)){
+            String getState=object.getString("getState");
+            if(getState.equals("true")){
+                return true;
+            }else{
+                return false;
+            }
+
+        }else{
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean updateFee(String username, Double pay, String outtime) throws Exception {
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("username",username);
+        params.put("pay",pay);
+        params.put("outtime",outtime);
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.GETOUTRECORD,params);
+        JSONObject object=new JSONObject(json);
+        if(checkError(object)){
+            String getState=object.getString("updateState");
+            if(getState.equals("true")){
+                return true;
+            }else{
+                return false;
+            }
+
+        }else{
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public String getInTime(String username) throws Exception {
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("username",username);
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.GETINTIME,params);
+        JSONObject object=new JSONObject(json);
+        if(checkError(object)){
+            String intime=object.getString("intime");
+            return  intime;
+        }
+        return null;
+    }
+
 
     private boolean checkError(JSONObject object) {
         try {
