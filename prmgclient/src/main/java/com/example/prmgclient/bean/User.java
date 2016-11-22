@@ -14,6 +14,15 @@ public class User implements Serializable{
     private String CType;
     private String Cnum;
     private String RID;
+   private Double Money;
+
+    public Double getMoney() {
+        return Money;
+    }
+
+    public void setMoney(Double money) {
+        Money = money;
+    }
 
     public User() {
         super();

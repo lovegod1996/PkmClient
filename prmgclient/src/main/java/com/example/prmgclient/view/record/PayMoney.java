@@ -8,13 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.Record;
+import com.example.prmgclient.bean.User;
 import com.example.prmgclient.engine.RecordEngineImpl;
 
 import java.io.Serializable;
@@ -102,7 +105,14 @@ View relativelayout_w4;
 	     relativelayout_w4=(View)findViewById(R.id.relativelayout_w4);
 	     other.setVisibility(View.GONE);
 	     back=(Button)findViewById(R.id.button_back);
-	   
+	   balance= (TextView) findViewById(R.id.balance);
+		User user= (User) this.getIntent().getSerializableExtra("user");
+		balance.setText(user.getMoney()+"元");
+		if(user.getMoney()<10){
+			Toast toast = Toast.makeText(PayMoney.this, "余额不足，请及时充值......", Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
+		}
 	}
 	
 	private void addListener() {

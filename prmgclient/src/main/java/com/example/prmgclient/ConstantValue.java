@@ -58,6 +58,8 @@ public interface ConstantValue {
 
 	String  GETOUTRECORD="/updatefee";
 
+	String USERPAY="/uerPay";
+
 	//定义wifi密码
 	String WIFIPSD="1234567890";
 

@@ -21,7 +21,7 @@
                     android:layout_height="40dp" 
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:text="20.00元"  
+                    android:text="00.00元"
                     android:textColor="#ffffff"
                     android:textSize="32dp"/> 
                      

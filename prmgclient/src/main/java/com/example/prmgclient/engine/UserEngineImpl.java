@@ -90,4 +90,26 @@ public class UserEngineImpl implements UserEngine {
         }
         return null;
     }
+
+    @Override
+    public boolean pay(String username, double payMoney) throws Exception {
+        HttpClientUtil util=new HttpClientUtil();
+        Map<String,Object> params=new HashMap<String,Object>();
+        params.put("username",username);
+        params.put("pay",payMoney);
+
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.USERPAY,params);
+
+        JSONObject object=new JSONObject(json);
+
+        if(checkError(object)){
+            String registerState=object.getString("payState");
+            if(registerState.equals("true")){
+                return  true;
+            }else{
+                return false;
+            }
+        }
+        return false;
+    }
 }

@@ -19,6 +19,7 @@ import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
 import com.example.prmgclient.engine.ParkEngineImpl;
 import com.example.prmgclient.engine.RecordEngineImpl;
+import com.example.prmgclient.engine.UserEngineImpl;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -65,75 +66,7 @@ public class GateInOut extends Activity {
 	 */
 	private GoogleApiClient client;
 	private ProgressDialog progressDialog;
-/*public void handlerMsg(){
-	handler=new Handler()
-         {
-         	@Override
-  			public void handleMessage(Message msg)
-  			{
-  				// �����Ϣ���������߳�
-  				if (msg.what == 0x123)
-  				{// ��ȡ������
-  					
- 					if(msg.obj.toString()!=null&&msg.obj.toString().contains("getin"))
- 					{
- 						
- 					
- 						AlertDialog.Builder builder =new AlertDialog.Builder(GateInOut.this);
- 						builder.setTitle(pname);
- 						//builder.setAdapter(new ArrayAdapter<String>(this, resource, textViewResourceId), null);
- 						builder.setMessage(name_number+"\n"+"̧�˽����ɹ���"+"\n"+"ʱ��:"+getNowtime());
- 			
- 	                 	builder.show();
- 	                 
- 	                 	Timer timer = new Timer();
- 	                 	TimerTask task=new TimerTask() {
-							
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								 Intent intent=new Intent(GateInOut.this, MainActivity.class);
-		  						 startActivity(intent);	
-		  						GateInOut.this.finish();
-							}
-						};
-						timer.schedule(task, 1000 * 3);
- 	                 	
- 	             
- 			}
- 					
-  					}
- 					if(msg.obj.toString()!=null&&msg.obj.toString().contains("getout"))
- 					{
- 						//Toast toast1=Toast.makeText(getApplicationContext(), msg.obj.toString(), Toast.LENGTH_SHORT);			
-      					// toast1.show();
-  						
-      					AlertDialog.Builder builder =new AlertDialog.Builder(GateInOut.this);
- 						
-      					builder.setTitle(pname);
- 						builder.setMessage(name_number+"\n"+"̧�˳����ɹ���"+"\n"+"����:"+msg.obj.toString().replace("getout;", "")+"  Ԫ"+"\n"+"����ʱ�䣺"+getintime(save_time));
- 	                 	builder.show();
- 	                 	Timer timer = new Timer();
-	                 	TimerTask task=new TimerTask() {
-						
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							 Intent intent=new Intent(GateInOut.this, MainActivity.class);
-	  						 startActivity(intent);	
-	  						GateInOut.this.finish();
-						}
-					};
-					timer.schedule(task, 1000 * 3);
 
-  					}
-  					
-  				}							
-  			
-  		};    
-        clientThread = new ClientThread(handler);
-       	new Thread(clientThread).start();  	// �ͻ�������ClientThread�̴߳����������ӡ���ȡ���Է�����������          
-   } */
 Handler handler=new Handler(){
 	@Override
 	public void handleMessage(Message msg) {
@@ -313,10 +246,12 @@ Handler handler=new Handler(){
 								super.run();
 								ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
 								RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
+								UserEngineImpl userEngineImpl=new UserEngineImpl();
 								try {
 									boolean upout=parkEngineImpl.updateout(pname);
 									boolean upfee=recordEngineImpl.updateFee(name_number,pay,save_time);
-									if(upfee&&upout){
+									boolean payState=userEngineImpl.pay(name_number,pay);
+									if(upfee&&upout&&payState){
 										handler.sendEmptyMessage(9);
 									}
 								} catch (Exception e) {

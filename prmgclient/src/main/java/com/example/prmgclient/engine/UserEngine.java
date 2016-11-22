@@ -13,4 +13,6 @@ public interface UserEngine {
     public boolean register(User user)throws  Exception;
     //根据用户名查找用户
     public User findUserByName(String name) throws  Exception;
+    //付费
+    public boolean pay(String username,double payMoney) throws Exception;
 }

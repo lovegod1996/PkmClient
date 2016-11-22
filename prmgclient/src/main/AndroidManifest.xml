@@ -28,7 +28,7 @@
 
         >
 
-        <activity android:name=".MainActivity" >
+        <activity android:name=".view.account.LoginActivity" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +39,7 @@
         <activity android:name=".view.park.ParkInformation"></activity>
         <activity android:name=".view.park.ParkInformation_self"></activity>
         <activity android:name=".view.account.Account_information"></activity>
-        <activity android:name=".view.account.LoginActivity"></activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".view.account.pre_registerActivity"></activity>
         <activity android:name=".view.account.RegisterActivity"></activity>
         <activity android:name=".view.record.PayMoney"></activity>

@@ -28,6 +28,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,8 +37,10 @@ import android.widget.Toast;
 
 import com.example.prmgclient.bean.ParkDetail;
 import com.example.prmgclient.bean.ParkName;
+import com.example.prmgclient.bean.User;
 import com.example.prmgclient.engine.ParkEngineImpl;
 import com.example.prmgclient.engine.RecordEngineImpl;
+import com.example.prmgclient.engine.UserEngineImpl;
 import com.example.prmgclient.util.GetlocationJson;
 import com.example.prmgclient.util.WifiAutoConnectManager;
 import com.example.prmgclient.view.account.Account_information;
@@ -112,14 +115,25 @@ private ProgressDialog progressDialog;
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what==7){
-                progressDialog.dismiss();
-                Bundle bundle=msg.getData();
-                String intime=msg.obj.toString();
-                Intent intent=new Intent(MainActivity.this, GateInOut.class);
-                intent.putExtras(bundle);
-                intent.putExtra("inttime",intime);
-                startActivity(intent);
+            switch (msg.what){
+                case 7:
+                    progressDialog.dismiss();
+                    Bundle bundle=msg.getData();
+                    String intime=msg.obj.toString();
+                    Intent intent=new Intent(MainActivity.this, GateInOut.class);
+                    intent.putExtras(bundle);
+                    intent.putExtra("inttime",intime);
+                    startActivity(intent);
+                    break;
+                case 10:
+                    progressDialog.dismiss();
+                    Bundle bb=msg.getData();
+                    Intent intent1=new Intent(MainActivity.this,PayMoney.class);
+                    intent1.putExtras(bb);
+                    startActivity(intent1);
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -159,8 +173,28 @@ private ProgressDialog progressDialog;
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent=new Intent(MainActivity.this,PayMoney.class);
-                startActivity(intent);
+                progressDialog= ProgressDialog.show(MainActivity.this,"请稍候","获取数据中..",true);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        UserEngineImpl userEngineImpl=new UserEngineImpl();
+                        try {
+                            User user=userEngineImpl.findUserByName(name_number);
+
+                            Message msg=new Message();
+                            msg.what=10;
+                            Bundle bundle=new Bundle();
+                            bundle.putSerializable("user",user);
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
+
             }
         });
 
@@ -699,4 +733,32 @@ private ProgressDialog progressDialog;
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+    private long exitTime = 0;
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - exitTime > 2000) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else
+        {
+            finish();
+
+            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        {
+
+            onBackPressed();
+            return false;
+        }
+        return false;
+    }
+
 }
