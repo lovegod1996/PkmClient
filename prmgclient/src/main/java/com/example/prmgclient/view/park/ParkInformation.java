@@ -1,8 +1,11 @@
 package com.example.prmgclient.view.park;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -34,10 +37,28 @@ public class ParkInformation extends Activity {
      private ImageView is_search;
      private ListView ListView_park_name;
 
-       ArrayList<String> arr1 = new ArrayList<String>();
+    ArrayList<String> arr1 = new ArrayList<String>();
     ArrayAdapter<String> adapter1;
     String editname;
+    private ProgressDialog progressDialog;
     private static  List<ParkName> parklist;
+Handler handler=new Handler(){
+    @Override
+    public void handleMessage(Message msg) {
+        super.handleMessage(msg);
+        switch (msg.what){
+            case 12:
+                progressDialog.dismiss();
+                Bundle bundle=msg.getData();
+                Intent intent=new Intent(ParkInformation.this, ParkInformation_self.class);
+                intent.putExtras(bundle);
+                 startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
+};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +68,29 @@ public class ParkInformation extends Activity {
         addListener();
         ListView_park_name.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String pname=arr1.get(i).toString();//得到点击的列表项的值
-                ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
-                try {
-                    ParkDetail parkDeatil=parkEngineImpl.getParkDetailByName(pname);
-                    System.out.println(parkDeatil);
-                    Intent intent=new Intent(ParkInformation.this, ParkInformation_self.class);
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("parkdetail",parkDeatil);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                final String pname=arr1.get(i).toString();//得到点击的列表项的值
+                progressDialog= ProgressDialog.show(ParkInformation.this,"请稍候","获取数据中..",true);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
+                        try {
+                            ParkDetail parkDeatil=parkEngineImpl.getParkDetailByName(pname);
+                            Bundle bundle=new Bundle();
+                            bundle.putSerializable("parkdetail",parkDeatil);
+
+                            Message msg=new Message();
+                            msg.what=12;
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }.start();
 
             }
         });

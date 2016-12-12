@@ -37,7 +37,7 @@ public class GateInOut extends Activity {
 
 	TextView t_title;
 	Button other;
-
+    Button back;
 	//TextView wifi_name;
 //	TextView wifi_du;
 	TextView welcome;
@@ -128,6 +128,12 @@ Handler handler=new Handler(){
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
 		// See https://g.co/AppIndexing/AndroidStudio for more information.
 		client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+		back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
+			}
+		});
 	}
 
 	public void init() {
@@ -135,7 +141,7 @@ Handler handler=new Handler(){
 		other = (Button) findViewById(R.id.button_other);
 		t_title.setText("进<——>出");
 		other.setVisibility(View.GONE);
-
+       back= (Button) findViewById(R.id.button_back);
 
 		we_name = (TextView) findViewById(R.id.we_name);
 		pa_time2 = (TextView) findViewById(R.id.pa_time2);

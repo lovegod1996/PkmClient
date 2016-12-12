@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private Button back;
     private Button other;
     private TextView title;
+    int wifiinfo=-100;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -132,6 +133,15 @@ private ProgressDialog progressDialog;
                     intent1.putExtras(bb);
                     startActivity(intent1);
                     break;
+                case 11:
+                    progressDialog.dismiss();
+                    Bundle bun=new Bundle();
+                    bun=msg.getData();
+                    Intent intent2 = new Intent(MainActivity.this, ParkInformation.class);
+                    intent2.putExtras(bun);
+                    startActivity(intent2);
+                    break;
+
                 default:
                     break;
             }
@@ -151,18 +161,27 @@ private ProgressDialog progressDialog;
         image_park_information.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
-                try {
-                    List<ParkName> parklist = parkEngineImpl.getParkNameList();
-                    Intent intent = new Intent(MainActivity.this, ParkInformation.class);
-                    // intent.putExtra("parklist", parklist);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("parklist", (Serializable) parklist);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                progressDialog= ProgressDialog.show(MainActivity.this,"请稍候","获取数据中..",true);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
+                        try {
+                            List<ParkName> parklist = parkEngineImpl.getParkNameList();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("parklist", (Serializable) parklist);
+                            Message msg=new Message();
+                            msg.what=11;
+                            msg.setData(bundle);
+                            handler.sendMessage(msg);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
             }
         });
         /**
@@ -173,6 +192,10 @@ private ProgressDialog progressDialog;
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                sp = getSharedPreferences("userInfo", 0);
+                //取出手机号数据
+                name_number = sp.getString("USER_NAME",null);
+
                 progressDialog= ProgressDialog.show(MainActivity.this,"请稍候","获取数据中..",true);
                 new Thread(){
                     @Override
@@ -217,8 +240,7 @@ private ProgressDialog progressDialog;
                 String wifipwd="";//定义连接wifimima
 
                 if(isWifiOpen()){
-                    WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-                    wifiInfo = wifiManager.getConnectionInfo();
+
                     wifiname=getWifiName();  //获取应该连接的wifi名，根据预设的wifi阀值
                     if(isWifiConnect()){
 
@@ -229,37 +251,99 @@ private ProgressDialog progressDialog;
                         toast.show();
                     }else{   //获取到应该连接wifi名
                         if(wifiname.equals(nowwifi)){  //当前连接wifi名与应该连接的wifi名相同
-                            if(wifiInfo.getRssi()>-50){
+                    /*    *//**
+                          *  动态检测wifiInfo
+                         *//*
+
+                          *//*  if(wifiInfo.getRssi()<-50){
+                                 progressDialog= ProgressDialog.show(MainActivity.this,"请稍候","检测阀指中..",true);
+
+                               *//**//* new Thread(){
+                                    @Override
+                                    public void run() {
+                                        super.run();
+                                        while (wifiInfo.getRssi()<-50){
+                                            try {
+                                                Thread.sleep(1000);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        handler.sendEmptyMessage(11);
+                                    }
+                                }.start();*//**//*
+                              *//**//*  Thread t=new Thread(){
+                                    @Override
+                                    public void run() {
+                                        super.run();
+                                        while (wifiInfo.getRssi()<-50){
+                                            try {
+                                                Thread.sleep(1000);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        handler.sendEmptyMessage(11);
+                                    }
+                                };*//**//*
+                            }*//*
+                            //    弹出要给ProgressDialog
+                            progressDialog = new ProgressDialog(MainActivity.this);
+                            progressDialog.setTitle("提示信息");
+                            progressDialog.setMessage("正在分析阈值，请稍后......");
+                            //    设置setCancelable(false); 表示我们不能取消这个弹出框，等下载完成之后再让弹出框消失
+                            progressDialog.setCancelable(false);
+                            //    设置ProgressDialog样式为圆圈的形式
+                            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                          //  new CheckThresholdAsyncTask(wifiManager,progressDialog).execute(wifiInfo.getRssi());
+                            System.out.println("发送数据   "+wifiInfo.getRssi());
+
+                            CheckThresholdAsyncTask checkThresholdAsyncTask=new CheckThresholdAsyncTask(wifiManager,progressDialog);
+                            checkThresholdAsyncTask.execute(wifiInfo.getRssi());
+                            System.out.println("异步任务执行状态   "+checkThresholdAsyncTask.getStatus());
+                              if(checkThresholdAsyncTask.getStatus()==AsyncTask.Status.RUNNING){
+                                  try {
+                                      this.wait();
+                                  } catch (InterruptedException e) {
+                                      e.printStackTrace();
+                                  }
+                              }
+
+                            if(checkThresholdAsyncTask.getStatus()==AsyncTask.Status.FINISHED) {*/
                                 //执行进场操作
-                               //所要执行的操作内容：查询停车场信息，查询停车记录
-                                progressDialog= ProgressDialog.show(MainActivity.this,"请稍候","获取数据中..",true);
-                                 new Thread(){
-                                     @Override
-                                     public void run() {
-                                         ParkEngineImpl parkEngineImpl=new ParkEngineImpl();
-                                         RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
-                                         try {
-                                             ParkDetail parkDetail=parkEngineImpl.getParDetailkByWifiname(wifiname);
-                                             String intime=recordEngineImpl.getInTime(name_number);
+                                //所要执行的操作内容：查询停车场信息，查询停车记录
+                                progressDialog = ProgressDialog.show(MainActivity.this, "距离太远", "继续向前行驶..", true);
+                                new Thread() {
+                                    @Override
+                                    public void run() {
+                                        while(wifiInfo.getRssi()<-52){
+                                            try {
+                                                System.out.println("延时部分输出   "+wifiInfo.getRssi()+" "+time(wifiInfo.getRssi()));
+                                                Thread.sleep(time(wifiInfo.getRssi()));
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
+                                        RecordEngineImpl recordEngineImpl = new RecordEngineImpl();
+                                        try {
+                                            ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
+                                            String intime = recordEngineImpl.getInTime(name_number);
 
-                                             Message msg=new Message();
-                                             msg.what=7;
-                                             Bundle bundle=new Bundle();
-                                             bundle.putSerializable("parkdetail",parkDetail);
-                                             msg.setData(bundle);
-                                             msg.obj=intime;
-                                             handler.sendMessage(msg);
-                                         } catch (Exception e) {
-                                             e.printStackTrace();
-                                         }
+                                            Message msg = new Message();
+                                            msg.what = 7;
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("parkdetail", parkDetail);
+                                            msg.setData(bundle);
+                                            msg.obj = intime;
+                                            handler.sendMessage(msg);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
 
-                                     }
-                                 }.start();
-                            }else{
-                                Toast toast1 = Toast.makeText(MainActivity.this, "Wifi 强度值不够，请再向前行驶", Toast.LENGTH_SHORT);
-                                toast1.setGravity(Gravity.CENTER, 0, 0);
-                                toast1.show();
-                            }
+                                    }
+                                }.start();
+
                         }else{//连接应该连接的wifi
                             wac.connect(wifiname, ConstantValue.WIFIPSD,ConstantValue.WIFIPSD.equals("")? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS: WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
                             if(isWifiConnect()){
@@ -296,6 +380,13 @@ private ProgressDialog progressDialog;
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    private int time(int rssi) {
+        int tt;
+        int rs=0-rssi;
+        tt=16*rs-600;
+        return  tt;
+    }
+
     private void init() {
 
         //初始化主界面按钮
@@ -321,6 +412,8 @@ private ProgressDialog progressDialog;
         imgnight=(ImageView) findViewById(R.id.imagenight);
         temp1_1=(TextView) findViewById(R.id.temp1_1);
 
+         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+        wifiInfo = wifiManager.getConnectionInfo();
 
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.parking_info);
         Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.mipmap.in_out);
@@ -355,8 +448,10 @@ private ProgressDialog progressDialog;
                     String street = detail.getString("street");
                     String streetnum = detail.getString("street_number");
                     cityname = district;
-                    textview1.setText(district);//---------------------------------------------
+                    textview1.setText(district);
                 } catch (JSONException e1) {
+                    temp1_1.setVisibility(View.GONE);
+                    wrong.setText("网络不稳定哦！");
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
@@ -364,6 +459,8 @@ private ProgressDialog progressDialog;
                 try {
                     ccode = URLEncoder.encode(cityname);
                 } catch (Exception e) {
+                    temp1_1.setVisibility(View.GONE);
+                    wrong.setText("网络不稳定哦！");
                     e.printStackTrace();
                 }
                 if (ccode != null) {
@@ -555,11 +652,12 @@ private ProgressDialog progressDialog;
                 if (scanResult.level > -100) {
                     if (scanResult.SSID.contains("god")) {
                         wifiname = scanResult.SSID;
+                        return wifiname;
                     }
                 }
             }
         }
-        return wifiname;
+       return null;
     }
 
  /*

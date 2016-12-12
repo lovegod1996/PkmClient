@@ -66,21 +66,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_cb5a9f0b2ff214de87136490b235a1c70b47fcd8\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\libs\internal_impl-25.0.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_78048d82b676aaa85aedb839bb4aa4ce46745af3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
+        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.4.0_cb5a9f0b2ff214de87136490b235a1c70b47fcd8\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -102,21 +102,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3b337cc3a52c598d24f81c6be7bdee3791b6ce54">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_29c8a0e4700ab4725ebf0f7903b70ac0d0499b30\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.0.0_23c703f021eab2e801e6e841816c8149edb255d1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ecc3ea06350c5c8509a01c7fda4623a92d3a5870">
+        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_29c8a0e4700ab4725ebf0f7903b70ac0d0499b30\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -142,7 +142,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="62974b53a6e989f8e20c20854a5c31210ffa5e6e">
+        sha1="eff63b49df06feac04b318b5f217e42392a9f918">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_d4c1e94880b0ad0f836d8625f446af74aa136693\classes.dex" />
     </item>
     <item
