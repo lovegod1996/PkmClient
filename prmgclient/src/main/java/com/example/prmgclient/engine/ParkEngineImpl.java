@@ -115,10 +115,11 @@ public class ParkEngineImpl implements ParkEngine {
         String json=util.sendPost(ConstantValue.COMMON+ConstantValue.FINDPARKBYWIFI,params);
         JSONObject object=new JSONObject(json);
         if(checkError(object)){
-            parkDetail=new ParkDetail();
             String parkDetailStr=object.getString("parkdetail");
+            System.out.println("客户端接收停车信息"+parkDetailStr);
             parkDetail= JSON.parseObject(parkDetailStr,ParkDetail.class);
 
+            System.out.println("客户端接收停车信息"+parkDetail);
 
             return  parkDetail;
         }

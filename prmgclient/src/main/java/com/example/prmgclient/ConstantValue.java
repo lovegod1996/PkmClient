@@ -32,7 +32,8 @@ public interface ConstantValue {
 	 */
 	String LOTTERY_URI = "http://10.0.2.2:8080/ZCWService/Entrance";// 10.0.2.2模拟器如果需要跟PC机通信127.0.0.1
 	// String LOTTERY_URI = "http://192.168.1.100:8080/ZCWService/Entrance";// 10.0.2.2模拟器如果需要跟PC机通信127.0.0.1
-	String COMMON="http://192.168.191.1:8080/prmgserver";
+	String COMMON="http://10.26.250.252:8080/prmgserver";
+//	String COMMON="http://192.168.191.1:8080/prmgserver";
 
 	String PARKDETAIL="/parkdetail";
 
