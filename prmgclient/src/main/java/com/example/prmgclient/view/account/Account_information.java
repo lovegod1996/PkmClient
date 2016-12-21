@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.User;
 import com.example.prmgclient.engine.UserEngineImpl;
@@ -49,6 +51,10 @@ public class Account_information extends Activity {
 				Intent intent=new Intent(Account_information.this, Account_manage.class);
 				intent.putExtras(bundle);
 				startActivity(intent);
+			}
+			if(msg.what==16){
+				progressDialog.dismiss();
+				Toast.makeText(Account_information.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -112,19 +118,23 @@ public class Account_information extends Activity {
 					   new Thread(){
 						   @Override
 						   public void run() {
-							   UserEngineImpl userEngineImpl=new UserEngineImpl();
-							   try {
+							   if(MainActivity.isConnByHttpServer()) {
+								   UserEngineImpl userEngineImpl = new UserEngineImpl();
+								   try {
 
-								   User user=userEngineImpl.findUserByName(name_nu);
-								   System.out.println(user);
-								   Message msg=new Message();
-								   msg.what=2;
-								   Bundle bb=new Bundle();
-								   bb.putSerializable("user",user);
-								   msg.setData(bb);
-                                   handler.sendMessage(msg);
-							   } catch (Exception e) {
-								   e.printStackTrace();
+									   User user = userEngineImpl.findUserByName(name_nu);
+									   System.out.println(user);
+									   Message msg = new Message();
+									   msg.what = 2;
+									   Bundle bb = new Bundle();
+									   bb.putSerializable("user", user);
+									   msg.setData(bb);
+									   handler.sendMessage(msg);
+								   } catch (Exception e) {
+									   e.printStackTrace();
+								   }
+							   }else{
+								   handler.sendEmptyMessage(16);
 							   }
 						   }
 					   }.start();

@@ -14,7 +14,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.Record;
 import com.example.prmgclient.engine.RecordEngineImpl;
@@ -62,6 +64,10 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
 				listItems=getList(listRecord);
                simpleAdapter.notifyDataSetChanged();
 				swipeLayout.setRefreshing(false);
+			}
+			if(msg.what==16){
+				swipeLayout.setRefreshing(false);
+				Toast.makeText(PayMoney_self.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
 			}
 
 		}
@@ -186,19 +192,22 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
 		new Thread(){
 			@Override
 			public void run() {
-				RecordEngineImpl recordEngineImpl=new RecordEngineImpl();
-				try {
-					List<Record> recordList=recordEngineImpl.getListRecord(name_nu);
-					Message msg=new Message();
-					msg.what=5;
-					Bundle bundle=new Bundle();
-					bundle.putSerializable("recordList", (Serializable) recordList);
-					msg.setData(bundle);
-					handler.sendMessage(msg);
-				} catch (Exception e) {
-					e.printStackTrace();
+				if(MainActivity.isConnByHttpServer()) {
+					RecordEngineImpl recordEngineImpl = new RecordEngineImpl();
+					try {
+						List<Record> recordList = recordEngineImpl.getListRecord(name_nu);
+						Message msg = new Message();
+						msg.what = 5;
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("recordList", (Serializable) recordList);
+						msg.setData(bundle);
+						handler.sendMessage(msg);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}else{
+					handler.sendEmptyMessage(16);
 				}
-
 			}
 		}.start();
 	}
