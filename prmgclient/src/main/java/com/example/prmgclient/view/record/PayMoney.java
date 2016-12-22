@@ -24,6 +24,7 @@ import com.example.prmgclient.bean.User;
 import com.example.prmgclient.engine.RecordEngineImpl;
 import com.example.prmgclient.engine.UserEngineImpl;
 import com.example.prmgclient.util.HCache;
+import com.example.prmgclient.util.NetWorkUtil;
 
 import org.json.JSONException;
 
@@ -144,34 +145,39 @@ public class PayMoney extends Activity {
                 sp = getSharedPreferences("userInfo", 0);
                 name_nu = sp.getString("USER_NAME", null);
                 progressDialog = ProgressDialog.show(PayMoney.this, "请稍候", "获取数据中..", true);
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        if (MainActivity.isConnByHttpServer()) {
-                            UserEngineImpl userEngineImpl = new UserEngineImpl();
-                            try {
-                                User user = userEngineImpl.findUserByName(name_nu);
-                                System.out.println(user);
-                                String jsonUser = JSON.toJSONString(user);
-                                if (mcache.getString("jsonUser")) {
-                                    mcache.remove("jsonUser");
+                if(NetWorkUtil.isNetworkConnected(PayMoney.this)) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            if (MainActivity.isConnByHttpServer()) {
+                                UserEngineImpl userEngineImpl = new UserEngineImpl();
+                                try {
+                                    User user = userEngineImpl.findUserByName(name_nu);
+                                    System.out.println(user);
+                                    String jsonUser = JSON.toJSONString(user);
+                                    if (mcache.getString("jsonUser")) {
+                                        mcache.remove("jsonUser");
+                                    }
+                                    mcache.put("jsonUser", jsonUser);
+                                    Message msg = new Message();
+                                    msg.what = 5;
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("user", user);
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                mcache.put("jsonUser", jsonUser);
-                                Message msg = new Message();
-                                msg.what = 5;
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("user", user);
-                                msg.setData(bundle);
-                                handler.sendMessage(msg);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            } else {
+                                handler.sendEmptyMessage(16);
                             }
-                        } else {
-                            handler.sendEmptyMessage(16);
                         }
-                    }
-                }.start();
+                    }.start();
+                }else{
+                    progressDialog.dismiss();
+                    Toast.makeText(PayMoney.this, "请检查网络....", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -18,6 +18,7 @@ import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.User;
 import com.example.prmgclient.engine.UserEngineImpl;
+import com.example.prmgclient.util.NetWorkUtil;
 
 public class Account_information extends Activity {
 	TextView t_title;//������
@@ -115,29 +116,34 @@ public class Account_information extends Activity {
 			   public void onClick(View view) {
 				   try{
 					   progressDialog=ProgressDialog.show(Account_information.this,"请稍候","获取数据中..",true);
-					   new Thread(){
-						   @Override
-						   public void run() {
-							   if(MainActivity.isConnByHttpServer()) {
-								   UserEngineImpl userEngineImpl = new UserEngineImpl();
-								   try {
+					   if( NetWorkUtil.isNetworkConnected(Account_information.this)) {
+						   new Thread() {
+							   @Override
+							   public void run() {
+								   if (MainActivity.isConnByHttpServer()) {
+									   UserEngineImpl userEngineImpl = new UserEngineImpl();
+									   try {
 
-									   User user = userEngineImpl.findUserByName(name_nu);
-									   System.out.println(user);
-									   Message msg = new Message();
-									   msg.what = 2;
-									   Bundle bb = new Bundle();
-									   bb.putSerializable("user", user);
-									   msg.setData(bb);
-									   handler.sendMessage(msg);
-								   } catch (Exception e) {
-									   e.printStackTrace();
+										   User user = userEngineImpl.findUserByName(name_nu);
+										   System.out.println(user);
+										   Message msg = new Message();
+										   msg.what = 2;
+										   Bundle bb = new Bundle();
+										   bb.putSerializable("user", user);
+										   msg.setData(bb);
+										   handler.sendMessage(msg);
+									   } catch (Exception e) {
+										   e.printStackTrace();
+									   }
+								   } else {
+									   handler.sendEmptyMessage(16);
 								   }
-							   }else{
-								   handler.sendEmptyMessage(16);
 							   }
-						   }
-					   }.start();
+						   }.start();
+					   }else{
+						   progressDialog.dismiss();
+						   Toast.makeText(Account_information.this, "请检查网络....", Toast.LENGTH_SHORT).show();
+					   }
 				   }catch (Exception e){
 					   e.printStackTrace();
 				   }

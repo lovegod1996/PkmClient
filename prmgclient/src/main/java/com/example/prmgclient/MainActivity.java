@@ -44,8 +44,8 @@ import com.example.prmgclient.bean.User;
 import com.example.prmgclient.engine.ParkEngineImpl;
 import com.example.prmgclient.engine.RecordEngineImpl;
 import com.example.prmgclient.engine.UserEngineImpl;
-import com.example.prmgclient.net.NetUtil;
 import com.example.prmgclient.net.NetWorkReceiver;
+import com.example.prmgclient.util.DateUtil;
 import com.example.prmgclient.util.GetlocationJson;
 import com.example.prmgclient.util.HCache;
 import com.example.prmgclient.util.NetWorkUtil;
@@ -77,6 +77,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -125,70 +126,70 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private ProgressDialog progressDialog;
-    Handler handler=new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 7:
                     progressDialog.dismiss();
-                    Bundle bundle=msg.getData();
-                    int tt=bundle.getInt("longTime");
-                    if(tt>20000){
+                    Bundle bundle = msg.getData();
+                    int tt = bundle.getInt("longTime");
+                    if (tt > 20000) {
                         progressDialog.cancel();
                         Toast toast1 = Toast.makeText(MainActivity.this, "请求超时，请重试..", Toast.LENGTH_SHORT);
                         toast1.setGravity(Gravity.CENTER, 0, 0);
                         toast1.show();
-                    }else{
-                        String intime=msg.obj.toString();
-                        Intent intent=new Intent(MainActivity.this, GateInOut.class);
+                    } else {
+                        String intime = msg.obj.toString();
+                        Intent intent = new Intent(MainActivity.this, GateInOut.class);
                         intent.putExtras(bundle);
-                        intent.putExtra("inttime",intime);
+                        intent.putExtra("inttime", intime);
                         startActivity(intent);
                     }
                     break;
                 case 10:
                     progressDialog.dismiss();
-                    Bundle bb=msg.getData();
-                    Intent intent1=new Intent(MainActivity.this,PayMoney.class);
+                    Bundle bb = msg.getData();
+                    Intent intent1 = new Intent(MainActivity.this, PayMoney.class);
                     intent1.putExtras(bb);
                     startActivity(intent1);
                     break;
                 case 11:
                     progressDialog.dismiss();
-                    Bundle bun=new Bundle();
-                    bun=msg.getData();
+                    Bundle bun = new Bundle();
+                    bun = msg.getData();
                     Intent intent2 = new Intent(MainActivity.this, ParkInformation.class);
                     intent2.putExtras(bun);
                     startActivity(intent2);
                     break;
                 case 12:
-                   // progressDialog = ProgressDialog.show(MainActivity.this, "距离太远", "第"+msg.obj+"次检测，继续向前行驶..", true);
-                  progressDialog.setMessage("第"+msg.obj+"次检测，继续向前行驶..");
-                //    progressDialog.setProgressNumberFormat(msg.obj.toString());
-                  //  progressDialog.dismiss();
+                    // progressDialog = ProgressDialog.show(MainActivity.this, "距离太远", "第"+msg.obj+"次检测，继续向前行驶..", true);
+                    progressDialog.setMessage("第" + msg.obj + "次检测，继续向前行驶..");
+                    //    progressDialog.setProgressNumberFormat(msg.obj.toString());
+                    //  progressDialog.dismiss();
                     break;
                 case 13:
-                  String b=  msg.obj.toString();
-                    if(b.equals("true")){
-                        connServer=true;
+                    String b = msg.obj.toString();
+                    if (b.equals("true")) {
+                        connServer = true;
                         Toast toast1 = Toast.makeText(MainActivity.this, "服务器流畅运行，请放心使用", Toast.LENGTH_SHORT);
                         toast1.setGravity(Gravity.CENTER, 0, 0);
                         toast1.show();
-                    }else{
+                    } else {
                         Toast toast1 = Toast.makeText(MainActivity.this, "服务器正在维护......", Toast.LENGTH_SHORT);
                         toast1.setGravity(Gravity.CENTER, 0, 0);
                         toast1.show();
                     }
                     break;
                 case 14:
-                   Bundle bundle1=msg.getData();
-                    parkDetail= (ParkDetail) bundle1.getSerializable("pp");
+                    Bundle bundle1 = msg.getData();
+                    parkDetail = (ParkDetail) bundle1.getSerializable("pp");
                     break;
                 case 15:
-                    Bundle bundle2=msg.getData();
-                    String weatherJson=bundle2.getString("weatherJson");
-                    String city=bundle2.getString("cityname");
+                    Bundle bundle2 = msg.getData();
+                    String weatherJson = bundle2.getString("weatherJson");
+                    String city = bundle2.getString("cityname");
 
                     JSONObject jsonweaObject;
                     JSONObject jobweather = null;
@@ -213,8 +214,15 @@ public class MainActivity extends AppCompatActivity {
 
                             weatherDespText.setText(jobweather.getString("weather"));
                             textview1.setText(city);
+                            //判断是白天还是黑夜
+                            if (DateUtil.isInDate(new Date(System.currentTimeMillis()), "07:00:00", "17:00:00")) {
+                                imgnight.setVisibility(View.GONE);
+                            } else {
+                                imgday.setVisibility(View.GONE);
+                            }
                             //获取图片链接显示
-                            if(NetIsConnect(MainActivity.this)){
+                            if (NetIsConnect(MainActivity.this)) {
+
                                 try {
                                     byte[] data = getImage(jobweather.getString("dayPictureUrl"));
                                     if (data != null) {
@@ -223,10 +231,10 @@ public class MainActivity extends AppCompatActivity {
                                             System.out.println("获取团片数据为空");
                                             bitmap = BitmapFactory.decodeStream(getStream(jobweather.getString("dayPictureUrl")));
                                         }
-                                        if(mcache.existBitmap("imgday")){
+                                        if (mcache.existBitmap("imgday")) {
                                             mcache.remove("imgday");
                                         }
-                                        mcache.put("imgday",bitmap);
+                                        mcache.put("imgday", bitmap);
                                         imgday.setImageBitmap(bitmap);// display image
                                     } else {
                                         Toast.makeText(MainActivity.this, "Image error!", Toast.LENGTH_SHORT).show();
@@ -245,10 +253,10 @@ public class MainActivity extends AppCompatActivity {
                                             System.out.println("获取团片数据为空");
                                             bitmap = BitmapFactory.decodeStream(getStream(jobweather.getString("nightPictureUrl")));
                                         }
-                                        if(mcache.existBitmap("imgnight")){
+                                        if (mcache.existBitmap("imgnight")) {
                                             mcache.remove("imgnight");
                                         }
-                                        mcache.put("imgnight",bitmap);
+                                        mcache.put("imgnight", bitmap);
                                         imgnight.setImageBitmap(bitmap);// display image
                                     } else {
                                         Toast.makeText(MainActivity.this, "Image error!", Toast.LENGTH_SHORT).show();
@@ -257,9 +265,9 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Network error!", Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
                                 }
-                            }else{
-                                Bitmap imgdaybit=mcache.getAsBitmap("imgday");
-                                Bitmap imgnightbit=mcache.getAsBitmap("imgnight");
+                            } else {
+                                Bitmap imgdaybit = mcache.getAsBitmap("imgday");
+                                Bitmap imgnightbit = mcache.getAsBitmap("imgnight");
                                 imgday.setImageBitmap(imgdaybit);// display image
                                 imgnight.setImageBitmap(imgnightbit);// display image
                             }
@@ -296,18 +304,18 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        mcache=HCache.get(this);
+        mcache = HCache.get(this);
         init();
         image_park_information.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(NetWorkUtil.isNetworkConnected(MainActivity.this)) {
+                if (NetWorkUtil.isNetworkConnected(MainActivity.this)) {
                     progressDialog = ProgressDialog.show(MainActivity.this, "请稍候", "获取数据中..", true);
                     new Thread() {
                         @Override
                         public void run() {
                             super.run();
-                            if(isConnByHttpServer()) {
+                            if (isConnByHttpServer()) {
                                 ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
                                 try {
                                     List<ParkName> parklist = parkEngineImpl.getParkNameList();
@@ -321,12 +329,12 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            }else{
+                            } else {
                                 handler.sendEmptyMessage(16);
                             }
                         }
                     }.start();
-                }else{
+                } else {
                     Toast toast1 = Toast.makeText(MainActivity.this, "请检查网络。。。。", Toast.LENGTH_SHORT);
                     toast1.setGravity(Gravity.CENTER, 0, 0);
                     toast1.show();
@@ -343,58 +351,58 @@ public class MainActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 sp = getSharedPreferences("userInfo", 0);
                 //取出手机号数据
-                name_number = sp.getString("USER_NAME",null);
-                    if(NetUtil.checkNet(MainActivity.this)) {
-                        progressDialog = ProgressDialog.show(MainActivity.this, "请稍候", "获取数据中..", true);
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                super.run();
-                                if(isConnByHttpServer()) {
-                                    UserEngineImpl userEngineImpl = new UserEngineImpl();
-                                    try {
-                                        User user = userEngineImpl.findUserByName(name_number);
-                                        String jsonUser = JSON.toJSONString(user);
-                                        if (mcache.getString("jsonUser")) {
-                                            mcache.remove("jsonUser");
-                                        }
-                                        mcache.put("jsonUser", jsonUser);
-                                        Message msg = new Message();
-                                        msg.what = 10;
-                                        Bundle bundle = new Bundle();
-                                        bundle.putSerializable("user", user);
-                                        msg.setData(bundle);
-                                        handler.sendMessage(msg);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                name_number = sp.getString("USER_NAME", null);
+                if (NetWorkUtil.isNetworkConnected(MainActivity.this)) {
+                    progressDialog = ProgressDialog.show(MainActivity.this, "请稍候", "获取数据中..", true);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            if (isConnByHttpServer()) {
+                                UserEngineImpl userEngineImpl = new UserEngineImpl();
+                                try {
+                                    User user = userEngineImpl.findUserByName(name_number);
+                                    String jsonUser = JSON.toJSONString(user);
+                                    if (mcache.getString("jsonUser")) {
+                                        mcache.remove("jsonUser");
                                     }
-                                }else{
-                                    //调用缓存
-                                    String jsonUser=mcache.getAsString("jsonUser");
-                                    User user=JSON.parseObject(jsonUser,User.class);
+                                    mcache.put("jsonUser", jsonUser);
                                     Message msg = new Message();
                                     msg.what = 10;
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("user", user);
                                     msg.setData(bundle);
                                     handler.sendMessage(msg);
-                                    handler.sendEmptyMessage(16);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
+                            } else {
+                                //调用缓存
+                                String jsonUser = mcache.getAsString("jsonUser");
+                                User user = JSON.parseObject(jsonUser, User.class);
+                                Message msg = new Message();
+                                msg.what = 10;
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("user", user);
+                                msg.setData(bundle);
+                                handler.sendMessage(msg);
+                                handler.sendEmptyMessage(16);
                             }
-                        }.start();
-                    }else{
-                        Toast toast1 = Toast.makeText(MainActivity.this, "请检查网络。。。。", Toast.LENGTH_SHORT);
-                        toast1.setGravity(Gravity.CENTER, 0, 0);
-                        toast1.show();
-                        //调用缓存
-                        String jsonUser=mcache.getAsString("jsonUser");
-                        User user=JSON.parseObject(jsonUser,User.class);
-                        Bundle bb=new Bundle();
-                        bb.putSerializable("user", user);
-                        Intent intent1=new Intent(MainActivity.this,PayMoney.class);
-                        intent1.putExtras(bb);
-                        startActivity(intent1);
-                    }
+                        }
+                    }.start();
+                } else {
+                    Toast toast1 = Toast.makeText(MainActivity.this, "请检查网络。。。。", Toast.LENGTH_SHORT);
+                    toast1.setGravity(Gravity.CENTER, 0, 0);
+                    toast1.show();
+                    //调用缓存
+                    String jsonUser = mcache.getAsString("jsonUser");
+                    User user = JSON.parseObject(jsonUser, User.class);
+                    Bundle bb = new Bundle();
+                    bb.putSerializable("user", user);
+                    Intent intent1 = new Intent(MainActivity.this, PayMoney.class);
+                    intent1.putExtras(bb);
+                    startActivity(intent1);
+                }
 
             }
         });
@@ -402,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
         other.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,Account_information.class);
+                Intent intent = new Intent(MainActivity.this, Account_information.class);
                 startActivity(intent);
             }
         });
@@ -414,111 +422,132 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 sp = getSharedPreferences("userInfo", 0);
                 //取出手机号数据
-                name_number = sp.getString("USER_NAME",null);
-                String wifipwd="";//定义连接wifimima
-
-                if(isWifiOpen()) {
-
+                name_number = sp.getString("USER_NAME", null);
+                String wifipwd = "";//定义连接wifimima
+                if (isWifiOpen()) {
                     wifiname = getWifiName();  //获取应该连接的wifi名，根据预设的wifi阀值
-
                     if (isWifiConnect()) {
+                        String nowwifi = getConnectWifiSsid().replaceAll("\"", "");   ///获取当前连接的wifi名
+                        if (wifiname == null) {
+                            Toast toast = Toast.makeText(MainActivity.this, "未找到正确wifi", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                        } else {   //获取到应该连接wifi名
+                            if (parkDetail != null) {
+                                //找到该停车场
+                                if (wifiname.equals(nowwifi)) {  //当前连接wifi名与应该连接的wifi名相同
 
-                            String nowwifi = getConnectWifiSsid().replaceAll("\"", "");   ///获取当前连接的wifi名
-                            if (wifiname == null) {
-                                Toast toast = Toast.makeText(MainActivity.this, "未找到正确wifi", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
-                            } else {   //获取到应该连接wifi名
-
-                                if (parkDetail != null) {
-                                    //找到该停车场
-                                    if (wifiname.equals(nowwifi)) {  //当前连接wifi名与应该连接的wifi名相同
-
-                                        System.out.println("当前停车场阈值：" + parkDetail);
-                                        /**
-                                         *  动态检测wifiInfo
-                                         *  *  //执行进场操作
-                                         *  //所要执行的操作内容：查询停车场信息，查询停车记录 */
-                                        progressDialog = ProgressDialog.show(MainActivity.this, "距离太远", "继续向前行驶..", true);
+                                    System.out.println("当前停车场阈值：" + parkDetail);
+                                    /**
+                                     *  动态检测wifiInfo
+                                     *  *  //执行进场操作
+                                     *  //所要执行的操作内容：查询停车场信息，查询停车记录 */
+                                    progressDialog = ProgressDialog.show(MainActivity.this, "距离太远", "继续向前行驶..", true);
 //                                    final ParkDetail finalParkDetail = parkDetail;
-                                        new Thread() {
-                                            @Override
-                                            public void run() {
-                                                if(isConnByHttpServer()) {
-                                                    int tt = 0;
-                                                    int times = 0;
-                                                    //int rssi=Integer.parseInt(finalParkDetail.getRSSI());
-                                                    while (wifiInfo.getRssi() < (0 - parkDetail.getRssi())) {
-                                                        try {
-                                                            times++;
-                                                            tt = tt + time(wifiInfo.getRssi());
-                                                            System.out.println("当前时间===   " + tt / 1000 + "秒");
-                                                            if (tt > 20000) {
-                                                                break;
-                                                            }
-                                                            Message msg = new Message();
-                                                            msg.what = 12;
-                                                            msg.obj = times;
-                                                            handler.sendMessage(msg);
-                                                            System.out.println("延时部分输出   " + wifiInfo.getRssi() + " " + time(wifiInfo.getRssi()));
-                                                            Thread.sleep(time(wifiInfo.getRssi()));
-                                                        } catch (Exception e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                    System.out.println("当前阈值===   " + wifiInfo.getRssi());
-                                                    RecordEngineImpl recordEngineImpl = new RecordEngineImpl();
+                                    new Thread() {
+                                        @Override
+                                        public void run() {
+                                            if (isConnByHttpServer()) {
+                                                int tt = 0;
+                                                int times = 0;
+                                                //int rssi=Integer.parseInt(finalParkDetail.getRSSI());
+                                                while (wifiInfo.getRssi() < (0 - parkDetail.getRssi())) {
                                                     try {
-                                                        String intime = recordEngineImpl.getInTime(name_number);
+                                                        times++;
+                                                        tt = tt + time(wifiInfo.getRssi());
+                                                        System.out.println("当前时间===   " + tt / 1000 + "秒");
+                                                        if (tt > 20000) {
+                                                            break;
+                                                        }
                                                         Message msg = new Message();
-                                                        msg.what = 7;
-                                                        Bundle bundle = new Bundle();
-                                                        bundle.putSerializable("parkdetail", parkDetail);
-                                                        bundle.putInt("longTime", tt);
-                                                        msg.setData(bundle);
-                                                        msg.obj = intime;
+                                                        msg.what = 12;
+                                                        msg.obj = times;
                                                         handler.sendMessage(msg);
+                                                        System.out.println("延时部分输出   " + wifiInfo.getRssi() + " " + time(wifiInfo.getRssi()));
+                                                        Thread.sleep(time(wifiInfo.getRssi()));
                                                     } catch (Exception e) {
                                                         e.printStackTrace();
                                                     }
-                                                }else{
-                                                    handler.sendEmptyMessage(16);
                                                 }
+                                                System.out.println("当前阈值===   " + wifiInfo.getRssi());
+                                                RecordEngineImpl recordEngineImpl = new RecordEngineImpl();
+                                                try {
+                                                    String intime = recordEngineImpl.getInTime(name_number);
+                                                    Message msg = new Message();
+                                                    msg.what = 7;
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable("parkdetail", parkDetail);
+                                                    bundle.putInt("longTime", tt);
+                                                    msg.setData(bundle);
+                                                    msg.obj = intime;
+                                                    handler.sendMessage(msg);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                handler.sendEmptyMessage(16);
                                             }
-                                        }.start();
-
-                                    } else {
-                                        //连接应该连接的wifi
-                                        wac.connect(wifiname, parkDetail.getWifipwd(), parkDetail.getWifipwd().equals("") ? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS : WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
-                                        if (isWifiConnect()) {
-                                            Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
-                                            toast1.setGravity(Gravity.CENTER, 0, 0);
-                                            toast1.show();
                                         }
-                                    }
+                                    }.start();
+
                                 } else {
-                                    System.out.println("暂未查找到符合该wifi的停车场");
-                                    Toast toast1 = Toast.makeText(MainActivity.this, "暂未查找到符合该wifi的停车场，请重试..", Toast.LENGTH_SHORT);
-                                    toast1.setGravity(Gravity.CENTER, 0, 0);
-                                    toast1.show();
+                                    //连接应该连接的wifi
+                                    wac.connect(wifiname, parkDetail.getWifipwd(), parkDetail.getWifipwd().equals("") ? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS : WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
+                                    if (isWifiConnect()) {
+                                        Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
+                                        toast1.setGravity(Gravity.CENTER, 0, 0);
+                                        toast1.show();
+                                    }
                                 }
-                            }
-                        } else {
-                            wac.connect(wifiname, parkDetail.getWifipwd(), parkDetail.getWifipwd().equals("") ? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS : WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
-                            if (isWifiConnect()) {
-                                Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
+                            } else {
+                                System.out.println("暂未查找到符合该wifi的停车场");
+                                Toast toast1 = Toast.makeText(MainActivity.this, "暂未查找到符合该wifi的停车场，请重试..", Toast.LENGTH_SHORT);
                                 toast1.setGravity(Gravity.CENTER, 0, 0);
                                 toast1.show();
+                                new Thread() {
+                                    @Override
+                                    public void run() {
+                                        super.run();
+                                        ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
+                                        try {
+                                            ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
+                                            if (mcache.getString("parkDetail")) {
+                                                mcache.remove("parkDetail");
+                                            }
+                                            mcache.put("parkDetail", parkDetail);
+                                            if (parkDetail == null && mcache.getString("parkDetail")) {
+                                                String parkDetailStr = mcache.getAsString("parkDetail");
+                                                parkDetail = JSON.parseObject(parkDetailStr, ParkDetail.class);
+                                            }
+                                            Message msg = new Message();
+                                            msg.what = 14;
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("pp", parkDetail);
+                                            msg.setData(bundle);
+                                            handler.sendMessage(msg);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }.start();
                             }
                         }
                     } else {
-                        //预设请求是否打开wifi
-                        wifiManager.setWifiEnabled(true);//打开wifi模块
-                        Toast toast = Toast.makeText(MainActivity.this, "wifi已打开！，请重试..", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
+                        wac.connect(wifiname, parkDetail.getWifipwd(), parkDetail.getWifipwd().equals("") ? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS : WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
+                        if (isWifiConnect()) {
+                            Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
+                            toast1.setGravity(Gravity.CENTER, 0, 0);
+                            toast1.show();
+                        }
                     }
+                } else {
+                    //预设请求是否打开wifi
+                    wifiManager.setWifiEnabled(true);//打开wifi模块
+                    Toast toast = Toast.makeText(MainActivity.this, "wifi已打开！，请重试..", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
                 }
+            }
 
         });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -527,19 +556,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * 添加网络监听器
      */
     private void registerReceiver() {
-        IntentFilter filter=new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        myReceiver=new NetWorkReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        myReceiver = new NetWorkReceiver();
         this.registerReceiver(myReceiver, filter);
     }
 
     /**
      * 注销监听器
      */
-    private  void unregisterReceiver(){
+    private void unregisterReceiver() {
         this.unregisterReceiver(myReceiver);
     }
 
@@ -551,11 +579,11 @@ public class MainActivity extends AppCompatActivity {
 
     private int time(int rssi) {
         int tt;
-        int rs=0-rssi;
-       // tt=16*rs-600;
+        int rs = 0 - rssi;
+        // tt=16*rs-600;
 //        tt=20*rs;
-        tt=20*rs-600;
-        return  tt;
+        tt = 20 * rs - 600;
+        return tt;
     }
 
     private void init() {
@@ -579,11 +607,11 @@ public class MainActivity extends AppCompatActivity {
         temp1Text = (TextView) findViewById(R.id.temp1);
         temp2Text = (TextView) findViewById(R.id.temp2);
         currentDateText = (TextView) findViewById(R.id.current_date);
-        imgday=(ImageView) findViewById(R.id.imageday);
-        imgnight=(ImageView) findViewById(R.id.imagenight);
-        temp1_1=(TextView) findViewById(R.id.temp1_1);
+        imgday = (ImageView) findViewById(R.id.imageday);
+        imgnight = (ImageView) findViewById(R.id.imagenight);
+        temp1_1 = (TextView) findViewById(R.id.temp1_1);
 
-         wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+        wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         wifiInfo = wifiManager.getConnectionInfo();
 
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.parking_info);
@@ -601,39 +629,39 @@ public class MainActivity extends AppCompatActivity {
         back.setVisibility(GONE);
 
         if (NetIsConnect(MainActivity.this)) {
-            new Thread(){
+            new Thread() {
                 @Override
                 public void run() {
                     super.run();
                     boolean connByHttpServer = isConnByHttpServer();
-                    Message msg=new Message();
-                    msg.what=13;
-                    msg.obj=connByHttpServer;
+                    Message msg = new Message();
+                    msg.what = 13;
+                    msg.obj = connByHttpServer;
                     handler.sendMessage(msg);
                 }
             }.start();
-            if(isWifiConnect()){
-                 wifiname=getWifiName();
-                System.out.println("获取wifi名"+wifiname);
-                new Thread(){
+            if (isWifiConnect()) {
+                wifiname = getWifiName();
+                System.out.println("获取wifi名" + wifiname);
+                new Thread() {
                     @Override
                     public void run() {
                         super.run();
                         ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
                         try {
-                            ParkDetail  parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
-                            if(mcache.getString("parkDetail")){
+                            ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
+                            if (mcache.getString("parkDetail")) {
                                 mcache.remove("parkDetail");
                             }
-                            mcache.put("parkDetail",parkDetail);
-                            if (parkDetail == null&&mcache.getString("parkDetail")) {
+                            mcache.put("parkDetail", parkDetail);
+                            if (parkDetail == null && mcache.getString("parkDetail")) {
                                 String parkDetailStr = mcache.getAsString("parkDetail");
                                 parkDetail = JSON.parseObject(parkDetailStr, ParkDetail.class);
                             }
-                            Message msg=new Message();
-                            msg.what=14;
-                            Bundle bundle=new Bundle();
-                            bundle.putSerializable("pp",parkDetail);
+                            Message msg = new Message();
+                            msg.what = 14;
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("pp", parkDetail);
                             msg.setData(bundle);
                             handler.sendMessage(msg);
                         } catch (Exception e) {
@@ -641,7 +669,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }.start();
-             }
+            }
             if (this.GpsIsOpen()) {
                 //Toast.makeText(this, "GPS模块正常", Toast.LENGTH_SHORT).show();
 
@@ -667,7 +695,7 @@ public class MainActivity extends AppCompatActivity {
                             cityname = district;
 
                         } catch (JSONException e1) {
-                            cityname="新郑";
+                            cityname = "新郑";
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
@@ -678,10 +706,10 @@ public class MainActivity extends AppCompatActivity {
                             String weatherUrl = "http://api.map.baidu.com/telematics/v3/weather?location=" + ccode + "&output=json&ak=MPDgj92wUYvRmyaUdQs1XwCf";
                             weatherJson = queryStringForGet(weatherUrl);
                             System.out.println(weatherJson);
-                            if(mcache.getString("weatherJson")){
+                            if (mcache.getString("weatherJson")) {
                                 mcache.remove("weatherJson");
                             }
-                            mcache.put("cityname",cityname);
+                            mcache.put("cityname", cityname);
                             mcache.put("weatherJson", weatherJson);
                         } catch (Exception e) {
                             weatherJson = mcache.getAsString("weatherJson");
@@ -699,8 +727,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
 //               temp1_1.setVisibility(View.GONE);
 //                wrong.setText("请开启GPS！");
-                String weatherjson=mcache.getAsString("weatherJson");
-                String cityname=mcache.getAsString("cityname");
+                String weatherjson = mcache.getAsString("weatherJson");
+                String cityname = mcache.getAsString("cityname");
                 Message msg = new Message();
                 msg.what = 15;
                 Bundle bundle = new Bundle();
@@ -713,8 +741,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
 //            temp1_1.setVisibility(View.GONE);
 //            wrong.setText("请开启数据！");
-            String weatherjson=mcache.getAsString("weatherJson");
-            String cityname=mcache.getAsString("cityname");
+            String weatherjson = mcache.getAsString("weatherJson");
+            String cityname = mcache.getAsString("cityname");
             Message msg = new Message();
             msg.what = 15;
             Bundle bundle = new Bundle();
@@ -724,7 +752,8 @@ public class MainActivity extends AppCompatActivity {
             handler.sendMessage(msg);
             //Toast.makeText(this, "请开启数据！", Toast.LENGTH_SHORT).show();
         }
-   }
+    }
+
     /**
      * 网络查询
      */
@@ -746,37 +775,40 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 判断服务器是否正常
+     *
      * @return
      */
-    public static boolean isConnByHttpServer(){
+    public static boolean isConnByHttpServer() {
         boolean isConn = false;
         URL url;
         HttpURLConnection conn = null;
         try {
-            url = new URL(ConstantValue.COMMON+ConstantValue.PARKLIST);
-            conn = (HttpURLConnection)url.openConnection();
-            conn.setConnectTimeout(1000*5);
-            if(conn.getResponseCode()==200){
+            url = new URL(ConstantValue.COMMON + ConstantValue.PARKLIST);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(1000 * 5);
+            if (conn.getResponseCode() == 200) {
                 isConn = true;
             }
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }catch (IOException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }finally{
+        } finally {
             conn.disconnect();
         }
         return isConn;
     }
+
     /**
      * 根据连接获取输入流
+     *
      * @param path
      * @return
      */
-    public  static InputStream getStream(String path) throws Exception {
+    public static InputStream getStream(String path) throws Exception {
         URL url = new URL(path);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(5 * 1000);
@@ -785,8 +817,9 @@ public class MainActivity extends AppCompatActivity {
         if (conn.getResponseCode() == 200) {
             return inStream;
         }
-        return  null;
-}
+        return null;
+    }
+
     /**
      * Get image from newwork
      *
@@ -851,8 +884,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            return null;
         }
-       return null;
+        return null;
     }
 
  /*
@@ -978,15 +1012,16 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 检查wifi模块是否开启
+     *
      * @return
      */
-    public boolean isWifiOpen(){
+    public boolean isWifiOpen() {
         WifiManager wifimanager;
         wifimanager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-        if(wifimanager.isWifiEnabled()){
-            return  true;
-        }else{
-            return  false;
+        if (wifimanager.isWifiEnabled()) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -1025,15 +1060,15 @@ public class MainActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
     private long exitTime = 0;
+
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis() - exitTime > 2000) {
+        if (System.currentTimeMillis() - exitTime > 2000) {
             Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
-        }
-        else
-        {
+        } else {
             finish();
 
             System.exit(0);
@@ -1042,10 +1077,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 
             onBackPressed();
             return false;

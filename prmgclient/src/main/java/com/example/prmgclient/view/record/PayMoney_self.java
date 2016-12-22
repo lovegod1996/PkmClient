@@ -20,6 +20,7 @@ import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.Record;
 import com.example.prmgclient.engine.RecordEngineImpl;
+import com.example.prmgclient.util.NetWorkUtil;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -67,7 +68,7 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
 			}
 			if(msg.what==16){
 				swipeLayout.setRefreshing(false);
-				Toast.makeText(PayMoney_self.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PayMoney_self.this, "网络连接异常....", Toast.LENGTH_SHORT).show();
 			}
 
 		}
@@ -192,7 +193,7 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
 		new Thread(){
 			@Override
 			public void run() {
-				if(MainActivity.isConnByHttpServer()) {
+				if(MainActivity.isConnByHttpServer()|| NetWorkUtil.isNetworkConnected(PayMoney_self.this)) {
 					RecordEngineImpl recordEngineImpl = new RecordEngineImpl();
 					try {
 						List<Record> recordList = recordEngineImpl.getListRecord(name_nu);
