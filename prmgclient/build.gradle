@@ -28,6 +28,8 @@ android {
     }
     buildTypes {
         release {
+            //引用正式签名
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -36,6 +38,7 @@ android {
     repositories {
         maven { url 'http://repo1.maven.org/maven2' }
     }
+    sourceSets { main { jniLibs.srcDirs 'libs' } }
 }
 
 dependencies {
@@ -50,6 +53,12 @@ dependencies {
     compile files('libs/commons-lang3-3.0-beta.jar')
     compile files('libs/httpcore-4.2.4.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile files('libs/baidumapapi_base_v4_1_1.jar')
+    compile files('libs/baidumapapi_cloud_v4_1_1.jar')
+    compile files('libs/baidumapapi_map_v4_1_1.jar')
+    compile files('libs/baidumapapi_radar_v4_1_1.jar')
+    compile files('libs/baidumapapi_search_v4_1_1.jar')
+    compile files('libs/baidumapapi_util_v4_1_1.jar')
 }
 
 buildscript {

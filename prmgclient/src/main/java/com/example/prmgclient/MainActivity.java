@@ -52,6 +52,7 @@ import com.example.prmgclient.util.NetWorkUtil;
 import com.example.prmgclient.util.WifiAutoConnectManager;
 import com.example.prmgclient.view.account.Account_information;
 import com.example.prmgclient.view.inorout.GateInOut;
+import com.example.prmgclient.view.map.Baidumap;
 import com.example.prmgclient.view.park.ParkInformation;
 import com.example.prmgclient.view.record.PayMoney;
 import com.google.android.gms.appindexing.Action;
@@ -339,6 +340,16 @@ public class MainActivity extends AppCompatActivity {
                     toast1.setGravity(Gravity.CENTER, 0, 0);
                     toast1.show();
                 }
+            }
+        });
+        /**
+         * 进入地图
+         */
+        imagefind_car.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Baidumap.class);
+                startActivity(intent);
             }
         });
         /**
