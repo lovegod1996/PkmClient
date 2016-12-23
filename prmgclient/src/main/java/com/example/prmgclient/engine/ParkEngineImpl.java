@@ -22,10 +22,8 @@ public class ParkEngineImpl implements ParkEngine {
     @Override
     public List<ParkName> getParkNameList() throws Exception {
         List<ParkName> parkList=null;
-
         HttpClientUtil util=new HttpClientUtil();
         String json=util.sendPost(ConstantValue.COMMON+ConstantValue.PARKLIST,null);
-
 //数据处理，检验数据是否回复正常
         try {
             JSONObject object=new JSONObject(json);
@@ -38,11 +36,8 @@ public class ParkEngineImpl implements ParkEngine {
                  * 使用alibaba。jar包控件
                  */
                 parkList= JSON.parseArray(parkListStr,ParkName.class);
-
                 //持久化到本地
                 //如果數據量過大，開啓子綫程完成數據擦歐縂
-
-
                 return  parkList;
             }else{
 
@@ -52,6 +47,35 @@ public class ParkEngineImpl implements ParkEngine {
         }
 
         return parkList;
+    }
+
+    @Override
+    public List<ParkDetail> getParkDetailList() throws Exception {
+        List<ParkDetail> parkDetailList=null;
+        HttpClientUtil util=new HttpClientUtil();
+        String json=util.sendPost(ConstantValue.COMMON+ConstantValue.PARKDEATILLIST,null);
+//数据处理，检验数据是否回复正常
+        try {
+            JSONObject object=new JSONObject(json);
+            if(checkError(object)){
+                //幫助數據處理
+                parkDetailList=new ArrayList<ParkDetail>();
+                //    String helpListstr=  object.getString("helplist");//[{....},{.....}]
+                String parkListStr=object.getString("parkDetailList");
+                /**
+                 * 使用alibaba。jar包控件
+                 */
+                parkDetailList= JSON.parseArray(parkListStr,ParkDetail.class);
+                //持久化到本地
+                //如果數據量過大，開啓子綫程完成數據擦歐縂
+                return  parkDetailList;
+            }else{
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  parkDetailList;
     }
 
     private boolean checkError(JSONObject object) {

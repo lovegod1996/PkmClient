@@ -21,6 +21,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\locSDK_6.13.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2cdb37444b41b42e1ce5a8a27e5d3c22e1c57479">
+        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\locSDK_6.13_7a18bd4f7a9eec87c01fcc11ba253a304c71a684.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_util_v4_1_1.jar"
         jumboMode="false"
         optimize="true"

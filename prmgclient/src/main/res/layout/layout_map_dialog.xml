@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"  
+    android:gravity="center"
+    android:orientation="vertical" >
+  <RelativeLayout 
+      android:id="@+id/park_info_relativelayout"
+      android:layout_width="fill_parent"
+      android:layout_height="75dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginTop="5dp">
+   <TextView 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" 
+      android:id="@+id/dialog_park_name"  
+      android:textSize="20dp"
+      android:text="停车场名称"/>
+     <TextView 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" 
+      android:id="@+id/dialog_park_distance"   
+      android:layout_marginTop="3dp"
+      android:layout_below="@id/dialog_park_name" 
+      android:textSize="15dp"
+      android:text="停车场距离"/>
+       <TextView 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" 
+      android:layout_marginTop="3dp"
+      android:id="@+id/dialog_park_position" 
+       android:layout_below="@id/dialog_park_distance"   
+      android:textSize="15dp"
+      android:text="停车场位置信息"/>
+    </RelativeLayout>
+  <Button 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" 
+      android:id="@+id/dialog_park_navigation"   
+      android:background="#5599FF"
+      android:text="导 航"
+      android:textColor="#ffffff"
+      android:textSize="20dp" />
+</LinearLayout>

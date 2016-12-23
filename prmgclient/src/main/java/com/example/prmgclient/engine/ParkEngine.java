@@ -12,6 +12,8 @@ import java.util.List;
 public interface ParkEngine {
     //获取停车场名称列表
     public List<ParkName> getParkNameList() throws  Exception;
+    //获取停车场列表
+    public List<ParkDetail> getParkDetailList()throws Exception;
    //根据停车场名获取停车场详细信息
     public ParkDetail getParkDetailByName(String Pname) throws  Exception;
    //根据wifi名获取停车场

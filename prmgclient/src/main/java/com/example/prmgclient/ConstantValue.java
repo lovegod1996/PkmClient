@@ -61,8 +61,9 @@ public interface ConstantValue {
 
 	String USERPAY="/uerPay";
 
-	//定义wifi密码
-	String WIFIPSD="1234567890";
+	String PARKDEATILLIST="/parkdetailist";
+//	//定义wifi密码
+//	String WIFIPSD="1234567890";
 
 	//检查服务器返回数据错误
 	String ERROR="error";

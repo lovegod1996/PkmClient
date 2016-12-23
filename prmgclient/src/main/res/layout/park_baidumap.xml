@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    
+  <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="500dp"
+        android:clickable="true" />
+  <ImageView 
+       android:id="@+id/realtime_traffic"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="25dp"
+        android:src="@mipmap/shishi22" />
+  <ImageView 
+       android:id="@+id/satellite_map"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/realtime_traffic"       
+        android:src="@mipmap/map_star" />
+  
+  
+  <ListView 
+      android:id="@+id/listview1"
+      android:layout_below="@id/bmapView"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" >
+  </ListView>  
+  
+   <ImageView 
+       android:id="@+id/location_map"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="60dp"
+        android:layout_above="@id/listview1"      
+        android:src="@mipmap/define_location" />
+    </RelativeLayout>
+

@@ -41,6 +41,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.prmgclient.bean.ParkDetail;
 import com.example.prmgclient.bean.ParkName;
 import com.example.prmgclient.bean.User;
+import com.example.prmgclient.engine.ParkEngine;
 import com.example.prmgclient.engine.ParkEngineImpl;
 import com.example.prmgclient.engine.RecordEngineImpl;
 import com.example.prmgclient.engine.UserEngineImpl;
@@ -52,7 +53,7 @@ import com.example.prmgclient.util.NetWorkUtil;
 import com.example.prmgclient.util.WifiAutoConnectManager;
 import com.example.prmgclient.view.account.Account_information;
 import com.example.prmgclient.view.inorout.GateInOut;
-import com.example.prmgclient.view.map.Baidumap;
+import com.example.prmgclient.view.map.Park_baidu_Map;
 import com.example.prmgclient.view.park.ParkInformation;
 import com.example.prmgclient.view.record.PayMoney;
 import com.google.android.gms.appindexing.Action;
@@ -79,7 +80,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.view.View.GONE;
 import static android.view.View.OnClickListener;
@@ -289,6 +292,17 @@ public class MainActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
                     break;
+                case 17:
+                    progressDialog.dismiss();
+                    Bundle bundle3 = new Bundle();
+                    bundle3 = msg.getData();
+                    Intent intent3 = new Intent(MainActivity.this, Park_baidu_Map.class);
+                    intent3.putExtras(bundle3);
+                    startActivity(intent3);
+
+
+//                   Toast.makeText(MainActivity.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
@@ -348,8 +362,60 @@ public class MainActivity extends AppCompatActivity {
         imagefind_car.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Baidumap.class);
-                startActivity(intent);
+
+               if(NetWorkUtil.isNetworkConnected(MainActivity.this)){
+                   progressDialog = ProgressDialog.show(MainActivity.this, "请稍候", "获取数据中..", true);
+                new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        if (isConnByHttpServer()){
+                            ParkEngine parkEngine=new ParkEngineImpl();
+                            try {
+                                List<ParkDetail> parkDetailList=parkEngine.getParkDetailList();
+                                //封装json
+                                Map<String, Object> data = new HashMap<String, Object>();
+                                data.put("parkDetailList", parkDetailList);
+                                String ParkDetailListJson = com.alibaba.fastjson.JSONObject.toJSONString(data);
+
+                                if (mcache.getString("ParkDetailListJson")) {
+                                    mcache.remove("ParkDetailListJson");
+                                }
+                                mcache.put("ParkDetailListJson", ParkDetailListJson);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("parkDetailList", (Serializable) parkDetailList);
+                                Message msg = new Message();
+                                msg.what = 17;
+                                msg.setData(bundle);
+                                handler.sendMessage(msg);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            String ParkDetailListJson = mcache.getAsString("ParkDetailListJson");
+                            try {
+                                org.json.JSONObject object = new org.json.JSONObject(ParkDetailListJson);
+                                String recordListstr = object.getString("ParkDetailListJson");
+                                List<ParkDetail> parkDetailList = JSON.parseArray(recordListstr, ParkDetail.class);
+                                Message msg = new Message();
+                                msg.what = 17;
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("parkDetailList", (Serializable) parkDetailList);
+                                msg.setData(bundle);
+                                handler.sendMessage(msg);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }.start();
+               }else{
+
+                   Toast toast1 = Toast.makeText(MainActivity.this, "请检查网络。。。。", Toast.LENGTH_SHORT);
+                   toast1.setGravity(Gravity.CENTER, 0, 0);
+                   toast1.show();
+               }
             }
         });
         /**

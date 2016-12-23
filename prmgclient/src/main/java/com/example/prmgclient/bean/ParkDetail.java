@@ -18,6 +18,8 @@ public class ParkDetail implements Serializable {
     private String wifiname;
     private String parking_left;
     private String phone;
+    private double latitude;
+    private double longitude;
 
     public int getPid() {
         return Pid;
@@ -99,6 +101,22 @@ public class ParkDetail implements Serializable {
         this.phone = phone;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     @Override
     public String toString() {
         return "ParkDetail{" +
@@ -107,11 +125,13 @@ public class ParkDetail implements Serializable {
                 ", adress='" + adress + '\'' +
                 ", CarCount='" + CarCount + '\'' +
                 ", PayCri='" + PayCri + '\'' +
-                ", rssi='" + rssi + '\'' +
+                ", rssi=" + rssi +
                 ", wifipwd='" + wifipwd + '\'' +
                 ", wifiname='" + wifiname + '\'' +
                 ", parking_left='" + parking_left + '\'' +
                 ", phone='" + phone + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
                 '}';
     }
 }

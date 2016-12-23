@@ -90,6 +90,7 @@
         <activity android:name=".view.account.Account_manage" />
         <activity android:name=".view.inorout.GateInOut" />
         <activity android:name=".view.TitlebarActivity" />
+        <activity android:name=".view.map.Park_baidu_Map" />
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.

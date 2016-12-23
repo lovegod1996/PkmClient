@@ -76,11 +76,9 @@
                 android:id="@+id/temp1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@id/imageday"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="70dp"
                 android:textColor="#ffffff"
                 android:textSize="20dp" />
             <TextView

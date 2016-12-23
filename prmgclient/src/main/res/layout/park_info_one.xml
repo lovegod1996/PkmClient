@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
      <include layout="@layout/title_bar" />
 
      <LinearLayout
@@ -14,25 +14,24 @@
          android:background="@mipmap/parking_one_bg" >
 
          <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" 
-             android:layout_marginTop="30dp"
-          >
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content">
 
              <ImageView
                  android:id="@+id/park_picture"
-                 android:layout_width="60dp"
-                 android:layout_height="60dp"
+                 android:layout_width="fill_parent"
+                 android:layout_height="150dp"
                  android:layout_centerHorizontal="true"
-                 android:src="@mipmap/pack_record" />
+                 android:scaleType="fitXY"
+                 android:src="@mipmap/park_image_one" />
 
              <TextView
                  android:id="@+id/p_name"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_below="@id/park_picture"
-                 android:layout_centerInParent="true"
-                 android:layout_marginTop="8dp"
+                 android:layout_marginTop="125dp"
+                 android:layout_centerHorizontal="true"
+                 android:textColor="#ffffff"
                  android:text="停车场我上线无所事事"
                  android:textSize="20dp" />
          </RelativeLayout>
@@ -72,31 +71,33 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:background="@color/devide_line" />
-         <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" 
-              android:layout_marginTop="10dp" >
 
-             <TextView
-                 android:id="@+id/p_address_name"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginTop="10dp"
-                 android:text="地址："
-                 android:textSize="18dp" />
-             <TextView
-                 android:id="@+id/p_address"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_toRightOf="@id/p_address_name"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginLeft="10dp"
-                 android:text="0"
-                 android:textSize="18dp" />
-             
-         </RelativeLayout>
-         <View
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/p_address_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="地址："
+            android:textSize="18dp" />
+        <TextView
+            android:id="@+id/p_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/p_address_name"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="0"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+
+    <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_marginLeft="10dp"
@@ -137,15 +138,20 @@
              android:layout_height="wrap_content"
               android:layout_marginTop="10dp" >
 
-             <TextView
-                 android:id="@+id/p_fee_name"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="10dp"
-                 android:layout_marginTop="10dp"
-                 android:text="收费标准："
-                 android:textSize="18dp" />
-             <TextView
+
+              <TextView
+                  android:id="@+id/p_fee_name"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="35dp"
+                  android:text="收费标准："
+                  android:textSize="18dp"
+                  android:layout_centerVertical="true"
+                  android:layout_alignParentLeft="true"
+                  android:layout_alignParentStart="true"
+                  android:layout_marginStart="35dp" />
+
+              <TextView
                  android:id="@+id/p_fee"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -163,8 +169,9 @@
                  android:layout_marginLeft="10dp"
                  android:text="元/小时"
                  android:textSize="18dp" />
-             
-         </RelativeLayout>
+
+
+          </RelativeLayout>
          <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
@@ -172,6 +179,31 @@
                         android:layout_marginRight="10dp"
                         android:background="@color/devide_line" />
          </LinearLayout>
+
+         <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="60dp"
+              android:orientation="horizontal"
+             android:gravity="bottom">
+
+             <Button
+                 android:layout_width="60dp"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/bun_navigation"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentStart="true" />
+             <Button
+             android:layout_width="60dp"
+             android:layout_height="wrap_content"
+             android:id="@+id/bun_luxian"
+
+             android:layout_alignParentRight="true"
+             android:text="qaasse"
+                 />
+         </LinearLayout>
+
+
      </LinearLayout>
+
 
 </LinearLayout>
