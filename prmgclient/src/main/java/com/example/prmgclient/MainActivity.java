@@ -2,6 +2,7 @@ package com.example.prmgclient;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -51,6 +52,7 @@ import com.example.prmgclient.util.GetlocationJson;
 import com.example.prmgclient.util.HCache;
 import com.example.prmgclient.util.NetWorkUtil;
 import com.example.prmgclient.util.WifiAutoConnectManager;
+import com.example.prmgclient.view.ViewUtil;
 import com.example.prmgclient.view.account.Account_information;
 import com.example.prmgclient.view.inorout.GateInOut;
 import com.example.prmgclient.view.map.Park_baidu_Map;
@@ -1162,5 +1164,30 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    /**
+     * 调用dialog
+     */
+    private Dialog dialog;
+    /**
+     * 显示Dialog
+     */
+    private void showDialog() {
+
+        if (dialog == null) {
+            dialog = ViewUtil.createLoadingDialog(this, "正在加载中...");
+            dialog.show();
+        }
+    }
+    /**
+     * 关闭Dialog
+     */
+    private void closeDialog() {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
 
 }

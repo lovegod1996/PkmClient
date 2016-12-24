@@ -2,25 +2,27 @@
 
 
  import android.app.Activity;
- import android.app.AlertDialog;
- import android.app.ProgressDialog;
- import android.content.DialogInterface;
- import android.content.Intent;
- import android.os.Bundle;
- import android.os.Handler;
- import android.os.Message;
- import android.view.View;
- import android.view.View.OnClickListener;
- import android.widget.Button;
- import android.widget.CheckBox;
- import android.widget.EditText;
- import android.widget.ListView;
- import android.widget.TextView;
- import android.widget.Toast;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
- import com.example.prmgclient.R;
- import com.example.prmgclient.bean.User;
- import com.example.prmgclient.engine.UserEngineImpl;
+import com.example.prmgclient.MainActivity;
+import com.example.prmgclient.R;
+import com.example.prmgclient.bean.User;
+import com.example.prmgclient.engine.UserEngineImpl;
+import com.example.prmgclient.util.NetWorkUtil;
 
 
  public class RegisterActivity extends Activity {
@@ -56,6 +58,10 @@
 					toast.show();
 				}
 			}
+			if(msg.what==16){
+				progressDialog.dismiss();
+				Toast.makeText(RegisterActivity.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
+			}
 
 		}
 	};
@@ -89,24 +95,31 @@
 								  user.setPasw(password1.getText().toString());
 								  user.setPname(user_name.getText().toString());
 								  user.setCnum(carnum);
-								  progressDialog = ProgressDialog.show(RegisterActivity.this, "正在注册", "获取数据中..", true);
-								  new Thread() {
-									  @Override
-									  public void run() {
-										  UserEngineImpl userEngineImpl = new UserEngineImpl();
-										  try {
-											  boolean bb = userEngineImpl.register(user);
-											  Message msg = new Message();
-											  msg.what = 3;
-											  msg.obj = bb;
-											  handler.sendMessage(msg);
-										  } catch (Exception e) {
-											  e.printStackTrace();
+								  if(NetWorkUtil.isNetworkConnected(RegisterActivity.this)) {
+									  progressDialog = ProgressDialog.show(RegisterActivity.this, "正在注册", "获取数据中..", true);
+									  new Thread() {
+										  @Override
+										  public void run() {
+											  if(MainActivity.isConnByHttpServer()) {
+												  UserEngineImpl userEngineImpl = new UserEngineImpl();
+												  try {
+													  boolean bb = userEngineImpl.register(user);
+													  Message msg = new Message();
+													  msg.what = 3;
+													  msg.obj = bb;
+													  handler.sendMessage(msg);
+												  } catch (Exception e) {
+													  e.printStackTrace();
+												  }
+											  }else{
+												  handler.sendEmptyMessage(16);
+											  }
 										  }
-
-									  }
-								  }.start();
-
+									  }.start();
+								  }else{
+									  Toast toast1 = Toast.makeText(getApplicationContext(), "请检查网络", Toast.LENGTH_SHORT);
+									  toast1.show();
+								  }
 							  } catch (Exception e) {
 								  // TODO Auto-generated catch block
 								  e.printStackTrace();

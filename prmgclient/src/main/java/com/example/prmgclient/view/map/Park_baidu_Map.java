@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -64,12 +66,14 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
+import com.example.prmgclient.util.HCache;
 import com.example.prmgclient.view.park.ParkInformation_self;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 
 public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultListener {
@@ -79,10 +83,10 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
     public MyLocationListenner myListener = new MyLocationListenner();
     MapView bmapview = null;
     BaiduMap mbaidmap;
-
     ImageView realtime_traffic;//实时交通
     ImageView satellite_map;//卫星图
     ImageView location_map;//定位图
+
 
     boolean isFirstLoc = true; // 是否首次定位
     //对话框
@@ -114,17 +118,37 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
     Dialog parkDialog;
     LatLng markerlatlog = null;
     List<ParkDetail> parkDetailList;
+    //基于gps基础相关，可删除
+    private LocationManager locationManager;
+    private String provider;
+    double[] end;
+
+    //获取缓存数据
+    HCache mcahe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.park_baidumap);
-
-        parkDetailList = (List<ParkDetail>) this.getIntent().getSerializableExtra("parkDetailList");
-        /*ActionBar actionBar=getActionBar();
+        mcahe = HCache.get(this);
+        try {
+            parkDetailList = (List<ParkDetail>) this.getIntent().getSerializableExtra("parkDetailList");
+        } catch (Exception e) {
+            if (mcahe.getString("ParkDetailListJson")) {
+                String parkDetailListJson = mcahe.getAsString("ParkDetailListJson");
+                org.json.JSONObject object = null;
+                try {
+                    object = new org.json.JSONObject(parkDetailListJson);
+                    String recordListstr = object.getString("ParkDetailListJson");
+                    parkDetailList = JSON.parseArray(recordListstr, ParkDetail.class);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+/*ActionBar actionBar=getActionBar();
         actionBar.setTitle("查找停车场");*/
-
 
         mCurrentMode = LocationMode.COMPASS;
         bmapview = (MapView) findViewById(R.id.bmapView);
@@ -141,16 +165,55 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(5000);
+        option.setScanSpan(800);
         option.setIsNeedAddress(true);
         option.setNeedDeviceDirect(true);
         //  option.setIgnoreKillProcess(true);
         option.setIsNeedLocationPoiList(true);
 
         mLocClient.setLocOption(option);
-        mLocClient.start();
+        mLocClient.start();      //调用这个方法进行定位
+
         System.out.println(option.getScanSpan());
         System.out.println(option.getLocationMode());
+
+//        end = this.getIntent().getDoubleArrayExtra("end");
+
+        /**
+         * 一下部分纯属测试
+         */
+      /*  locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> list = locationManager.getProviders(true);
+        if (list.contains(LocationManager.GPS_PROVIDER)) {
+            provider = LocationManager.GPS_PROVIDER;
+        } else if (list.contains(LocationManager.NETWORK_PROVIDER)) {
+            provider = LocationManager.NETWORK_PROVIDER;
+
+        } else {
+            Toast.makeText(this, "当前不能提供位置信息", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            navigateTo(location);
+        }
+
+        locationManager.requestLocationUpdates(provider, 5000, 1,
+                locationListener);*/
+/**
+ * 以上为测试
+ */
+
 
         init();//对话框and三图
         OnClickListener btn3ClickListener = new OnClickListener() {
@@ -201,6 +264,63 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
 
     }
 
+  /*  private void navigateTo(Location location) {
+        if (location == null || bmapview == null) {
+            System.out.println("kongk");
+            return;
+        }
+        // 显示个人位置图标
+        MyLocationData.Builder builder = new MyLocationData.Builder();
+        builder.latitude(location.getLatitude());
+        builder.longitude(location.getLongitude());
+        MyLocationData data = builder.build();
+        mbaidmap.setMyLocationData(data);
+        center = new LatLng(location.getLatitude(), location.getLongitude());
+        initmark(center);//添加标注点信息
+        //    showNearbyArea(center, 1300);//绘制搜索范围
+        mbaidmap.setMyLocationData(data);
+        mbaidmap.animateMapStatus(MapStatusUpdateFactory.newLatLng(center));
+        if (isFirstLoc) {
+            LatLng ll = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+            MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(ll);
+            // 移动到某经纬度
+            mbaidmap.animateMapStatus(update);
+            update = MapStatusUpdateFactory.zoomBy(5f);
+            // 放大
+            mbaidmap.animateMapStatus(update);
+            isFirstLoc = false;
+        }
+    }
+
+    LocationListener locationListener = new LocationListener() {
+
+        @Override
+        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onProviderEnabled(String arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onProviderDisabled(String arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onLocationChanged(Location arg0) {
+            // TODO Auto-generated method stub
+            // 位置改变则重新定位并显示地图
+            navigateTo(arg0);
+        }
+    };
+*/
 
     private void init() {
         // TODO Auto-generated method stub
@@ -241,8 +361,11 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             // TODO Auto-generated method stub
             switch (v.getId()) {
                 case R.id.park_info_relativelayout:
+                    ParkDetail parkDetail = findParkDetailByName(parkDetailList, dialog_park_name.getText().toString().trim());
                     Intent intent = new Intent(Park_baidu_Map.this, ParkInformation_self.class);
-                    intent.putExtra("park_name", dialog_park_name.getText());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("parkdetail", parkDetail);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     break;
                 case R.id.dialog_park_navigation:
@@ -254,6 +377,18 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             }
         }
     };
+
+    private ParkDetail findParkDetailByName(List<ParkDetail> parkDetailList, String trim) {
+        ParkDetail parkDetail = null;
+        for (int i = 0; i < parkDetailList.size(); i++) {
+            if (trim.equals(parkDetailList.get(i).getPname())) {
+                parkDetail = parkDetailList.get(i);
+                return parkDetail;
+            }
+        }
+        return parkDetail;
+    }
+
 
     private void initmark(LatLng center2) {
         BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(R.mipmap.icon_gcoding);
@@ -289,41 +424,51 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             latLngs[i] = new LatLng(parkDetailList.get(i).getLatitude(), parkDetailList.get(i).getLongitude());
         }
 
-        double[] llsort = new double[latLngs.length];
+        Integer[] llsort = new Integer[latLngs.length];
         for (int i = 0; i < latLngs.length; i++) {
-            llsort[i] = DistanceUtil.getDistance(latLngs[i], center2);//返回两个点之间的距离
+            llsort[i] = (int) DistanceUtil.getDistance(latLngs[i], center2);//返回两个点之间的距离
+            System.err.println("距离      " + llsort[i]);
         }
-
-        Ascendingsort(latLngs, llsort);//按照距离的远近排序（升序）
-
+        getSort(latLngs, llsort);
+        for (int i = 0; i < llsort.length; i++) {
+            System.err.println("第" + i + "个距离简单排序：" + llsort[i]);
+        }
+        // Ascendingsort(latLngs, llsort);//按照距离的远近排序（升序）
+//        for(int i=0;i<llsort.length;i++) {
+//            System.err.println("第"+i+"个距离："+llsort[i]);
+//        }
         List<Map<String, Object>> listitems = new ArrayList<Map<String, Object>>();
 
-        final List<MarkerOptions> markerlist = new ArrayList<MarkerOptions>();
+        final List<Marker> markerlist = new ArrayList<Marker>();
 
 //        String[] titlename = {"a停车场", "b停车场", "c停车场", "d停车场", "e停车场"};
+        int count = 0;
         for (int i = 0; i < latLngs.length; i++) {
-            int count = 0;
-            if (llsort[i] <= 1300.0) {
+            if (count > 10) {
+                break;
+            }
+            if (llsort[i] <= 2000.0) {
                 /**
                  * 判断点pt是否在，以pCenter为中心点，radius为半径的圆内。
                  * SpatialRelationUtil.isCircleContainsPoint(pCenter, radius, pt);
                  */
-                if (count > 10) {
-                    break;
-                }
-                count++;
-                System.out.println(latLngs[i]);
-                System.out.println(center2);
+                ParkDetail parkDetail = getParkByLatlng(parkDetailList, latLngs[i]);
+                System.out.println(parkDetail);
+                System.err.println("标注点" + i + " " + llsort[i] + "图标标号 " + count);
                 System.out.println(DistanceUtil.getDistance(latLngs[i], center2));
-                optionA = new MarkerOptions().position(latLngs[i]).icon(giflist.get(count)).title(parkDetailList.get(i).getPname());
+                optionA = new MarkerOptions().position(latLngs[i]).icon(giflist.get(count)).title(parkDetail.getPname());
                 //在地图上添加Marker，并显示
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("parkDetail", parkDetail);
                 Marker marker1 = (Marker) (mbaidmap.addOverlay(optionA));
-                markerlist.add(optionA);
-
-                arr1.add(i + 1 + "、" + optionA.getTitle() + "  距离：" + (int) llsort[i] + "米");
+                marker1.setExtraInfo(bundle);
+                markerlist.add(marker1);
+                count++;
+                arr1.add(count + "、" + optionA.getTitle() + "  距离：" + (int) llsort[i] + "米");
+                System.err.println(count + "、" + optionA.getTitle() + "  距离：" + (int) llsort[i] + "米");
             }
-        }
 
+        }
 
         mbaidmap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -332,9 +477,9 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                 // TODO Auto-generated method stub
                 dialog_park_name.setText(marker1.getTitle());
                 dialog_park_distance.setText((int) DistanceUtil.getDistance(marker1.getPosition(), center) + "米");
-
-//                dialog_park_position.setText();
-                System.out.println(marker1.getTitle());
+                Bundle bundle = marker1.getExtraInfo();
+                ParkDetail parkDetail = (ParkDetail) bundle.getSerializable("parkDetail");
+                dialog_park_position.setText(parkDetail.getAdress());
 
                 parkDialog.show();
                 markerlatlog = marker1.getPosition();
@@ -351,8 +496,13 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         });
 
         //listview1
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(Park_baidu_Map.this, R.layout.array_item, arr1);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(Park_baidu_Map.this, R.layout.array_item_map, arr1);
         listview1.setAdapter(adapter);
+
+     /*   if (end.length!= 0) {
+            LatLng end_position=new LatLng(end[0],end[1]);
+            ShowNavigationOverlay(end_position);
+        }*/
         listview1.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -360,27 +510,26 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                                     final int i, long arg3) {
                 // TODO Auto-generated method stub
                 String P_name = markerlist.get(i).getTitle();//得到点击的列表项的值
-
+                Marker marker = markerlist.get(i);
+                Bundle bundle = marker.getExtraInfo();
+                final ParkDetail parkDetail = (ParkDetail) bundle.getSerializable("parkDetail");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Park_baidu_Map.this);
                 builder.setTitle(P_name);
-                builder.setMessage(P_name);
+                builder.setMessage(parkDetail.getAdress());
 
                 builder.setPositiveButton("导航", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub
-                        ShowNavigationOverlay(latLngs[i]);
+                        LatLng latLng = new LatLng(parkDetail.getLatitude(), parkDetail.getLongitude());
+                        ShowNavigationOverlay(latLng);
                         adapter.clear();
                         adapter.notifyDataSetChanged();
                         // changeListView(adapter);
                         arr1.clear();
-                        System.out.println("arr1" + arr1.toString());
-
                     }
-
-
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 
@@ -396,6 +545,60 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             }
         });
 
+    }
+
+    /**
+     * 根据提供的经纬度值来找到停车场
+     *
+     * @param parkDetailList
+     * @param latLng
+     * @return
+     */
+    private ParkDetail getParkByLatlng(List<ParkDetail> parkDetailList, LatLng latLng) {
+        ParkDetail parkDetail = null;
+        for (int i = 0; i < parkDetailList.size(); i++) {
+            LatLng ll = new LatLng(parkDetailList.get(i).getLatitude(), parkDetailList.get(i).getLongitude());
+            if (latLng.latitude == ll.latitude && latLng.longitude == ll.longitude) {
+                parkDetail = parkDetailList.get(i);
+                return parkDetail;
+            }
+        }
+        return parkDetail;
+    }
+
+    /**
+     * 对经纬度值表和距离进行排序
+     *
+     * @param latLngs
+     * @param llsort
+     */
+    private void getSort(LatLng[] latLngs, Integer[] llsort) {
+        for (int i = 0; i < llsort.length - 1; i++) {
+            for (int j = i + 1; j < llsort.length; j++) {
+                int temp;
+                if (llsort[i] > llsort[j]) {
+                    LatLng templa = latLngs[j];
+                    temp = llsort[j];
+                    llsort[j] = llsort[i];
+                    latLngs[j] = latLngs[i];
+                    llsort[i] = temp;
+                    latLngs[i] = templa;
+                }
+            }
+        }
+    }
+
+    private void getSort(Integer[] llsort) {
+        for (int i = 0; i < llsort.length - 1; i++) {
+            for (int j = i + 1; j < llsort.length; j++) {
+                int temp;
+                if (llsort[i] > llsort[j]) {
+                    temp = llsort[j];
+                    llsort[j] = llsort[i];
+                    llsort[i] = temp;
+                }
+            }
+        }
     }
 
     @Override
@@ -418,14 +621,11 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             // result.getSuggestAddrInfo()
             return;
         }
+
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             // nodeIndex = -1;
-
-
             if (result.getRouteLines().size() >= 1) {
                 Resultdriving = result.getRouteLines().get(0);
-
-
                 for (int i = 1; i < Resultdriving.getAllStep().size(); i++) {
                     // System.out.println(Resultdriving.getAllStep().size());
                     final Object step = Resultdriving.getAllStep().get(i);
@@ -437,6 +637,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                 }
                 ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(Park_baidu_Map.this, R.layout.array_item, arr_node);
                 listview1.setAdapter(adapter2);
+
                 listview1.setOnItemClickListener(new OnItemClickListener() {
 
                     @Override
@@ -451,14 +652,15 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        System.out.println(nodeLocation.latitude + "  " + nodeLocation.longitude);
+                   /*     BitmapDescriptor da = BitmapDescriptorFactory.fromResource(R.mipmap.marker2);
+                        OverlayOptions option = new MarkerOptions().position(nodeLocation).icon(da);
+                        Marker  marker_node=(Marker) (mbaidmap.addOverlay(option));
+                        marker_node.setPerspective(true);*/
                         mbaidmap.setMapStatus(MapStatusUpdateFactory.newLatLng(nodeLocation));
+                        mbaidmap.setMapStatus(MapStatusUpdateFactory.zoomTo(18));
 
-                        System.out.println("asdfgg");
                     }
                 });
-
 
                 DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mbaidmap);
                 routeOverlay = overlay;
@@ -466,8 +668,6 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                 overlay.setData(result.getRouteLines().get(0));
                 overlay.addToMap();
                 overlay.zoomToSpan();
-                //   mBtnPre.setVisibility(View.VISIBLE);
-                //  mBtnNext.setVisibility(View.VISIBLE);
             } else {
                 Log.d("route result", "结果数<0");
                 return;
@@ -507,15 +707,17 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
      * @param abcd
      * @param llsort
      */
-    private void Ascendingsort(LatLng[] abcd, double[] llsort) {
+    private void Ascendingsort(LatLng[] abcd, Integer[] llsort) {
         // TODO Auto-generated method stub
         for (int i = 0; i < abcd.length - 1; i++) {
             for (int j = 0; j < abcd.length - i - 1; i++) {
                 if (llsort[j] > llsort[j + 1]) {
-                    double temp = llsort[j];
+                    int temp = llsort[j];
                     LatLng temp2 = abcd[j];
+
                     llsort[j] = llsort[j + 1];
                     abcd[j] = abcd[j + 1];
+
                     llsort[j + 1] = temp;
                     abcd[j + 1] = temp2;
                 }
@@ -528,6 +730,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
      * 定位SDK监听函数
      */
     public class MyLocationListenner implements BDLocationListener {
+
 
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -550,18 +753,20 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
 
             System.out.println(locData.latitude + "第一个" + locData.longitude);
             mbaidmap.setMyLocationData(locData);
+            mbaidmap.animateMapStatus(MapStatusUpdateFactory.newLatLng(center));
             if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
 
-                System.out.println(ll.latitude + " " + ll.longitude);
+                System.err.println(ll.latitude + " " + ll.longitude);
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
 
                 mbaidmap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
             }
+
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
