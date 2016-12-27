@@ -21,24 +21,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\locSDK_6.13.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2cdb37444b41b42e1ce5a8a27e5d3c22e1c57479">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\locSDK_6.13_7a18bd4f7a9eec87c01fcc11ba253a304c71a684.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_util_v4_1_1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d5630c44b212b90ad64c2bc2a994cbf28d1b08a7">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\baidumapapi_util_v4_1_1_7f214d9e0ef6215c64ad966134e4ab4a8e913b6d.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\commons-lang3-3.0-beta.jar"
         jumboMode="false"
         optimize="true"
@@ -72,15 +54,6 @@
         revision="25.0.0"
         sha1="3b7f38df6de5dd8b500e602ae8c2dd5ee446f883">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\httpcore-4.2.4_04757c9d0e33a34e5ff448563e253945d2ba3a71\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_base_v4_1_1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="00cd7d6a741c6a922c9cf7b0db52a357ebf12cdb">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\baidumapapi_base_v4_1_1_3e1a169583d5fb90709f28bf6920c60fa1881e19\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -137,15 +110,6 @@
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.0.0_23c703f021eab2e801e6e841816c8149edb255d1\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_cloud_v4_1_1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="93ef91d018051b8b5e001eb5e106b983fee8a549">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\baidumapapi_cloud_v4_1_1_8a09c93918b580880044a28ba6074282c4064dc7.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
@@ -162,15 +126,6 @@
         revision="25.0.0"
         sha1="fd32786786e2adb664d5ecc965da47629dca14ba">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\commons-codec_c7acfbde5d6c092bc276eb13e86e3ace69cf189f\classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_search_v4_1_1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b73dac26619f94061d28c54a7982ae8e0e783903">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\baidumapapi_search_v4_1_1_1c63314a2b8884db987c8b3bcd89b71604a82a82.jar" />
     </item>
     <item
         is-multidex="false"
@@ -227,24 +182,6 @@
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\internal_impl-25.0.0_02e3c0661a50f6a26b7adda82cd861b2cab4d616.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_radar_v4_1_1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ec3b3b79fdcc8fe059676554e31053027043edf8">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\baidumapapi_radar_v4_1_1_e29f69dcff46eb56f1efe797b2bcb317ef3bf630\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_map_v4_1_1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="930064f0a91ff20ceb8dd4504b7dadec5aabea82">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\baidumapapi_map_v4_1_1_04293779eb2a5eaa70b52687f1cec06b55084a8f\classes.dex" />
-    </item>
-    <item
         is-multidex="false"
         jar="D:\android\android_sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.0\support-annotations-25.0.0.jar"
         jumboMode="false"
@@ -255,21 +192,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_util_v4_1_1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d5630c44b212b90ad64c2bc2a994cbf28d1b08a7">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\baidumapapi_util_v4_1_1_7f214d9e0ef6215c64ad966134e4ab4a8e913b6d\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.0.0_fac544aab59d8bb27429cf2bce38a9f740472df6\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\BaiduLBS_Android.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4f0357c01c4bcfb349b77433d2185b53f4fd6928">
+        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\BaiduLBS_Android_b74904727b2f8784dc6e5b8c5f7c32644de5cb89.jar" />
     </item>
     <item
         is-multidex="false"
@@ -306,33 +243,6 @@
         revision="25.0.0"
         sha1="3b7f38df6de5dd8b500e602ae8c2dd5ee446f883">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\httpcore-4.2.4_04757c9d0e33a34e5ff448563e253945d2ba3a71.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_base_v4_1_1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="00cd7d6a741c6a922c9cf7b0db52a357ebf12cdb">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\baidumapapi_base_v4_1_1_3e1a169583d5fb90709f28bf6920c60fa1881e19.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_search_v4_1_1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b73dac26619f94061d28c54a7982ae8e0e783903">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\baidumapapi_search_v4_1_1_1c63314a2b8884db987c8b3bcd89b71604a82a82\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_cloud_v4_1_1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="93ef91d018051b8b5e001eb5e106b983fee8a549">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\transforms\dex\debug\folders\1000\2\baidumapapi_cloud_v4_1_1_8a09c93918b580880044a28ba6074282c4064dc7\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -480,12 +390,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_radar_v4_1_1.jar"
+        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\httpmime-4.1.2.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="ec3b3b79fdcc8fe059676554e31053027043edf8">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\baidumapapi_radar_v4_1_1_e29f69dcff46eb56f1efe797b2bcb317ef3bf630.jar" />
+        sha1="ed8b5ee0167cb27dea55851259eb34b609f31df0">
+        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\httpmime-4.1.2_32ddffd34765809c98ac684f0eff7bc7b707d4a2.jar" />
     </item>
     <item
         is-multidex="true"
@@ -513,15 +423,6 @@
         revision="25.0.0"
         sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
         <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\internal_impl-25.0.0_2fe775363eeda4679f71884acda2b595d49cb52a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\android\studio_workspace\PkmClient\prmgclient\libs\baidumapapi_map_v4_1_1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="930064f0a91ff20ceb8dd4504b7dadec5aabea82">
-        <dex dex="D:\android\studio_workspace\PkmClient\prmgclient\build\intermediates\pre-dexed\release\baidumapapi_map_v4_1_1_04293779eb2a5eaa70b52687f1cec06b55084a8f.jar" />
     </item>
     <item
         is-multidex="false"

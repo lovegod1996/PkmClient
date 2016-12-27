@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
     boolean connServer = false;
     private HCache mcache;
     private NetWorkReceiver myReceiver;
+
+    private String provider;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -291,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
 
                     break;
                 case 16:
+                    if(progressDialog!=null)
                     progressDialog.dismiss();
                     Toast.makeText(MainActivity.this, "服务器正在维护....", Toast.LENGTH_SHORT).show();
                     break;
@@ -315,6 +318,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 //注册service
         registerReceiver();
         if (Build.VERSION.SDK_INT > 9) {
@@ -365,59 +370,64 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               if(NetWorkUtil.isNetworkConnected(MainActivity.this)){
-                   progressDialog = ProgressDialog.show(MainActivity.this, "请稍候", "获取数据中..", true);
-                new Thread(){
-                    @Override
-                    public void run() {
-                        super.run();
-                        if (isConnByHttpServer()){
-                            ParkEngine parkEngine=new ParkEngineImpl();
-                            try {
-                                List<ParkDetail> parkDetailList=parkEngine.getParkDetailList();
-                                //封装json
-                                Map<String, Object> data = new HashMap<String, Object>();
-                                data.put("parkDetailList", parkDetailList);
-                                String ParkDetailListJson = com.alibaba.fastjson.JSONObject.toJSONString(data);
+                if (NetWorkUtil.isNetworkConnected(MainActivity.this)) {
+                    progressDialog = ProgressDialog.show(MainActivity.this, "请稍候", "获取数据中..", true);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            if (isConnByHttpServer()) {
+                                ParkEngine parkEngine = new ParkEngineImpl();
+                                try {
+                                    List<ParkDetail> parkDetailList = parkEngine.getParkDetailList();
+                                    //封装json
+                                    Map<String, Object> data = new HashMap<String, Object>();
+                                    data.put("parkDetailList", parkDetailList);
+                                    String ParkDetailListJson = com.alibaba.fastjson.JSONObject.toJSONString(data);
 
-                                if (mcache.getString("ParkDetailListJson")) {
-                                    mcache.remove("ParkDetailListJson");
+                                    if (mcache.getString("ParkDetailListJson")) {
+                                        mcache.remove("ParkDetailListJson");
+                                    }
+                                    mcache.put("ParkDetailListJson", ParkDetailListJson);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("parkDetailList", (Serializable) parkDetailList);
+                                    Message msg = new Message();
+                                    msg.what = 17;
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                mcache.put("ParkDetailListJson", ParkDetailListJson);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("parkDetailList", (Serializable) parkDetailList);
-                                Message msg = new Message();
-                                msg.what = 17;
-                                msg.setData(bundle);
-                                handler.sendMessage(msg);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            String ParkDetailListJson = mcache.getAsString("ParkDetailListJson");
-                            try {
-                                org.json.JSONObject object = new org.json.JSONObject(ParkDetailListJson);
-                                String recordListstr = object.getString("ParkDetailListJson");
-                                List<ParkDetail> parkDetailList = JSON.parseArray(recordListstr, ParkDetail.class);
-                                Message msg = new Message();
-                                msg.what = 17;
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("parkDetailList", (Serializable) parkDetailList);
-                                msg.setData(bundle);
-                                handler.sendMessage(msg);
+                            } else {
+                                if(mcache.getString("ParkDetailListJson")) {
+                                    String ParkDetailListJson = mcache.getAsString("ParkDetailListJson");
+                                    try {
+                                        org.json.JSONObject object = new org.json.JSONObject(ParkDetailListJson);
+                                        String recordListstr = object.getString("ParkDetailListJson");
+                                        List<ParkDetail> parkDetailList = JSON.parseArray(recordListstr, ParkDetail.class);
+                                        Message msg = new Message();
+                                        msg.what = 17;
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("parkDetailList", (Serializable) parkDetailList);
+                                        msg.setData(bundle);
+                                        handler.sendMessage(msg);
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }else{
+
+                                }
+
                             }
                         }
-                    }
-                }.start();
-               }else{
+                    }.start();
+                } else {
 
-                   Toast toast1 = Toast.makeText(MainActivity.this, "请检查网络。。。。", Toast.LENGTH_SHORT);
-                   toast1.setGravity(Gravity.CENTER, 0, 0);
-                   toast1.show();
-               }
+                    Toast toast1 = Toast.makeText(MainActivity.this, "请检查网络。。。。", Toast.LENGTH_SHORT);
+                    toast1.setGravity(Gravity.CENTER, 0, 0);
+                    toast1.show();
+                }
             }
         });
         /**
@@ -457,15 +467,19 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             } else {
                                 //调用缓存
-                                String jsonUser = mcache.getAsString("jsonUser");
-                                User user = JSON.parseObject(jsonUser, User.class);
-                                Message msg = new Message();
-                                msg.what = 10;
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("user", user);
-                                msg.setData(bundle);
-                                handler.sendMessage(msg);
-                                handler.sendEmptyMessage(16);
+                                if(mcache.getString("jsonUser")) {
+                                    String jsonUser = mcache.getAsString("jsonUser");
+                                    User user = JSON.parseObject(jsonUser, User.class);
+                                    Message msg = new Message();
+                                    msg.what = 10;
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("user", user);
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
+                                    handler.sendEmptyMessage(16);
+                                }else{
+                                    handler.sendEmptyMessage(16);
+                                }
                             }
                         }
                     }.start();
@@ -474,13 +488,15 @@ public class MainActivity extends AppCompatActivity {
                     toast1.setGravity(Gravity.CENTER, 0, 0);
                     toast1.show();
                     //调用缓存
-                    String jsonUser = mcache.getAsString("jsonUser");
-                    User user = JSON.parseObject(jsonUser, User.class);
-                    Bundle bb = new Bundle();
-                    bb.putSerializable("user", user);
-                    Intent intent1 = new Intent(MainActivity.this, PayMoney.class);
-                    intent1.putExtras(bb);
-                    startActivity(intent1);
+                    if(mcache.getString("jsonUser")) {
+                        String jsonUser = mcache.getAsString("jsonUser");
+                        User user = JSON.parseObject(jsonUser, User.class);
+                        Bundle bb = new Bundle();
+                        bb.putSerializable("user", user);
+                        Intent intent1 = new Intent(MainActivity.this, PayMoney.class);
+                        intent1.putExtras(bb);
+                        startActivity(intent1);
+                    }
                 }
 
             }
@@ -504,7 +520,9 @@ public class MainActivity extends AppCompatActivity {
                 name_number = sp.getString("USER_NAME", null);
                 String wifipwd = "";//定义连接wifimima
                 if (isWifiOpen()) {
-                    wifiname = getWifiName();  //获取应该连接的wifi名，根据预设的wifi阀值
+                    if (wifiname == null) {
+                        wifiname = getWifiName();  //获取应该连接的wifi名，根据预设的wifi阀值
+                    }
                     if (isWifiConnect()) {
                         String nowwifi = getConnectWifiSsid().replaceAll("\"", "");   ///获取当前连接的wifi名
                         if (wifiname == null) {
@@ -583,40 +601,54 @@ public class MainActivity extends AppCompatActivity {
                                 Toast toast1 = Toast.makeText(MainActivity.this, "暂未查找到符合该wifi的停车场，请重试..", Toast.LENGTH_SHORT);
                                 toast1.setGravity(Gravity.CENTER, 0, 0);
                                 toast1.show();
-                                new Thread() {
-                                    @Override
-                                    public void run() {
-                                        super.run();
-                                        ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
-                                        try {
-                                            ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
-                                            if (mcache.getString("parkDetail")) {
-                                                mcache.remove("parkDetail");
+                                if (wifiname != null) {
+                                    new Thread() {
+                                        @Override
+                                        public void run() {
+                                            super.run();
+                                            ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
+                                            try {
+                                                ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
+                                                if (mcache.getString("parkDetail")) {
+                                                    mcache.remove("parkDetail");
+                                                }
+                                                mcache.put("parkDetail", parkDetail);
+                                                if (parkDetail == null && mcache.getString("parkDetail")) {
+                                                    String parkDetailStr = mcache.getAsString("parkDetail");
+                                                    parkDetail = JSON.parseObject(parkDetailStr, ParkDetail.class);
+                                                }
+                                                Message msg = new Message();
+                                                msg.what = 14;
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("pp", parkDetail);
+                                                msg.setData(bundle);
+                                                handler.sendMessage(msg);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
                                             }
-                                            mcache.put("parkDetail", parkDetail);
-                                            if (parkDetail == null && mcache.getString("parkDetail")) {
-                                                String parkDetailStr = mcache.getAsString("parkDetail");
-                                                parkDetail = JSON.parseObject(parkDetailStr, ParkDetail.class);
-                                            }
-                                            Message msg = new Message();
-                                            msg.what = 14;
-                                            Bundle bundle = new Bundle();
-                                            bundle.putSerializable("pp", parkDetail);
-                                            msg.setData(bundle);
-                                            handler.sendMessage(msg);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
                                         }
+                                    }.start();
+                                } else {
+                                    wifiname = getWifiName();
+                                    if (wifiname != null) {
+                                        Toast.makeText(MainActivity.this, "找到正确wifi,请重试...", Toast.LENGTH_SHORT).show();
                                     }
-                                }.start();
+                                }
                             }
                         }
                     } else {
-                        wac.connect(wifiname, parkDetail.getWifipwd(), parkDetail.getWifipwd().equals("") ? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS : WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
-                        if (isWifiConnect()) {
-                            Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
-                            toast1.setGravity(Gravity.CENTER, 0, 0);
-                            toast1.show();
+                        if (wifiname != null) {
+                            wac.connect(wifiname, parkDetail.getWifipwd(), parkDetail.getWifipwd().equals("") ? WifiAutoConnectManager.WifiCipherType.WIFICIPHER_NOPASS : WifiAutoConnectManager.WifiCipherType.WIFICIPHER_WPA);
+                            if (isWifiConnect()) {
+                                Toast toast1 = Toast.makeText(MainActivity.this, "连接wifi成功！，请重试..", Toast.LENGTH_SHORT);
+                                toast1.setGravity(Gravity.CENTER, 0, 0);
+                                toast1.show();
+                            }
+                        } else {
+                            wifiname = getWifiName();
+                            if (wifiname != null) {
+                                Toast.makeText(MainActivity.this, "找到正确wifi,请重试...", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 } else {
@@ -719,39 +751,64 @@ public class MainActivity extends AppCompatActivity {
                     handler.sendMessage(msg);
                 }
             }.start();
-            if (isWifiConnect()) {
+            if (isWifiOpen()) {
                 wifiname = getWifiName();
-                System.out.println("获取wifi名" + wifiname);
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
-                        try {
-                            ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
-                            if (mcache.getString("parkDetail")) {
-                                mcache.remove("parkDetail");
+                if (wifiname == null) {
+                    Toast.makeText(this, "未找到正确wifi", Toast.LENGTH_SHORT).show();
+                } else {
+                    System.out.println("获取wifi名" + wifiname);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            if (isConnByHttpServer()) {
+                                ParkEngineImpl parkEngineImpl = new ParkEngineImpl();
+                                try {
+                                    ParkDetail parkDetail = parkEngineImpl.getParDetailkByWifiname(wifiname);
+                                    if (mcache.getString("parkDetail")) {
+                                        mcache.remove("parkDetail");
+                                    }
+                                    mcache.put("parkDetail", parkDetail);
+                                    if (parkDetail == null && mcache.getString("parkDetail")) {
+                                        String parkDetailStr = mcache.getAsString("parkDetail");
+                                        parkDetail = JSON.parseObject(parkDetailStr, ParkDetail.class);
+                                    }
+                                    Message msg = new Message();
+                                    msg.what = 14;
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("pp", parkDetail);
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                handler.sendEmptyMessage(16);
                             }
-                            mcache.put("parkDetail", parkDetail);
-                            if (parkDetail == null && mcache.getString("parkDetail")) {
-                                String parkDetailStr = mcache.getAsString("parkDetail");
-                                parkDetail = JSON.parseObject(parkDetailStr, ParkDetail.class);
-                            }
-                            Message msg = new Message();
-                            msg.what = 14;
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("pp", parkDetail);
-                            msg.setData(bundle);
-                            handler.sendMessage(msg);
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                }.start();
-            }
-            if (this.GpsIsOpen()) {
-                //Toast.makeText(this, "GPS模块正常", Toast.LENGTH_SHORT).show();
+                    }.start();
+                }
 
+            } else {
+                wifiManager.setWifiEnabled(true);//打开wifi模块
+                if (isWifiOpen()) {
+                    Toast.makeText(this, "wifi已打开！.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (!this.GpsIsOpen()) {
+                Toast.makeText(this, "建议开启GPS获取精确位置", Toast.LENGTH_SHORT).show();
+                if (mcache.getString("weatherJson") && mcache.getString("cityname")) {
+                    String weatherjson = mcache.getAsString("weatherJson");
+                    String cityname = mcache.getAsString("cityname");
+                    Message msg = new Message();
+                    msg.what = 15;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("weatherJson", weatherjson);
+                    bundle.putString("cityname", cityname);
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
+                }
+            } else {
                 new Thread() {
                     @Override
                     public void run() {
@@ -791,6 +848,7 @@ public class MainActivity extends AppCompatActivity {
                             mcache.put("cityname", cityname);
                             mcache.put("weatherJson", weatherJson);
                         } catch (Exception e) {
+                            if(mcache.getString("weatherJson"))
                             weatherJson = mcache.getAsString("weatherJson");
                             e.printStackTrace();
                         }
@@ -803,9 +861,11 @@ public class MainActivity extends AppCompatActivity {
                         handler.sendMessage(msg);
                     }
                 }.start();
-            } else {
-//               temp1_1.setVisibility(View.GONE);
-//                wrong.setText("请开启GPS！");
+            }
+        } else {
+//            temp1_1.setVisibility(View.GONE);
+//            wrong.setText("请开启数据！");
+            if (mcache.getString("weatherJson") && mcache.getString("cityname")) {
                 String weatherjson = mcache.getAsString("weatherJson");
                 String cityname = mcache.getAsString("cityname");
                 Message msg = new Message();
@@ -815,20 +875,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putString("cityname", cityname);
                 msg.setData(bundle);
                 handler.sendMessage(msg);
-                //Toast.makeText(this, "请开启GPS！", Toast.LENGTH_SHORT).show();
             }
-        } else {
-//            temp1_1.setVisibility(View.GONE);
-//            wrong.setText("请开启数据！");
-            String weatherjson = mcache.getAsString("weatherJson");
-            String cityname = mcache.getAsString("cityname");
-            Message msg = new Message();
-            msg.what = 15;
-            Bundle bundle = new Bundle();
-            bundle.putString("weatherJson", weatherjson);
-            bundle.putString("cityname", cityname);
-            msg.setData(bundle);
-            handler.sendMessage(msg);
             //Toast.makeText(this, "请开启数据！", Toast.LENGTH_SHORT).show();
         }
     }
@@ -1169,6 +1216,7 @@ public class MainActivity extends AppCompatActivity {
      * 调用dialog
      */
     private Dialog dialog;
+
     /**
      * 显示Dialog
      */
@@ -1179,6 +1227,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         }
     }
+
     /**
      * 关闭Dialog
      */

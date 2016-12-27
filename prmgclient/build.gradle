@@ -88,13 +88,8 @@ dependencies {
     compile files('libs/commons-lang3-3.0-beta.jar')
     compile files('libs/httpcore-4.2.4.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    compile files('libs/baidumapapi_base_v4_1_1.jar')
-    compile files('libs/baidumapapi_cloud_v4_1_1.jar')
-    compile files('libs/baidumapapi_map_v4_1_1.jar')
-    compile files('libs/baidumapapi_radar_v4_1_1.jar')
-    compile files('libs/baidumapapi_search_v4_1_1.jar')
-    compile files('libs/baidumapapi_util_v4_1_1.jar')
-    compile files('libs/locSDK_6.13.jar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/httpmime-4.1.2.jar')
 }
 
 buildscript {

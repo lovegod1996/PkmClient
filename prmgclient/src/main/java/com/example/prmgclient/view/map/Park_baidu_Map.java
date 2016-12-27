@@ -165,9 +165,10 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(800);
+        option.setScanSpan(2000);
         option.setIsNeedAddress(true);
         option.setNeedDeviceDirect(true);
+        option.setOpenAutoNotifyMode(5000,5,LocationClientOption.LOC_SENSITIVITY_HIGHT);
         //  option.setIgnoreKillProcess(true);
         option.setIsNeedLocationPoiList(true);
 
@@ -362,6 +363,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             switch (v.getId()) {
                 case R.id.park_info_relativelayout:
                     ParkDetail parkDetail = findParkDetailByName(parkDetailList, dialog_park_name.getText().toString().trim());
+                    System.out.println("导航发送目标 ："+parkDetail.getLongitude()+ "  "+parkDetail.getLatitude());
                     Intent intent = new Intent(Park_baidu_Map.this, ParkInformation_self.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("parkdetail", parkDetail);
@@ -770,7 +772,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
-            System.out.println(poiLocation.getCity() + " " + poiLocation.getAdUrl(getLocalClassName()));
+           // System.out.println(poiLocation.getCity() + " " + poiLocation.getAdUrl(getLocalClassName()));
         }
     }
 
