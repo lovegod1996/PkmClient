@@ -27,6 +27,7 @@ import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
+import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
@@ -143,6 +144,9 @@ public class ParkInformation_self extends Activity {
                     }
                 });
                 builderdialog.show();
+            }else{
+                Intent intent=new Intent(ParkInformation_self.this, MainActivity.class);
+                startActivity(intent);
             }
 //            Intent gpsIntent = new Intent();
 //            gpsIntent.setClassName("com.Android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
