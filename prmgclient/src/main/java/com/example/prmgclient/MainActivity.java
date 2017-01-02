@@ -2,9 +2,11 @@ package com.example.prmgclient;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -803,6 +805,28 @@ public class MainActivity extends Activity {
                     bundle.putString("cityname", cityname);
                     msg.setData(bundle);
                     handler.sendMessage(msg);
+                }else{
+                    /**
+                     *
+                     * 提示用户打开GPS
+                     */
+                    AlertDialog.Builder builderdialog= new AlertDialog.Builder(this);
+                    builderdialog.setMessage("请打开GPS");
+                    builderdialog.setPositiveButton("确定",new android.content.DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+
+                            startActivityForResult(intent, 0); //此为设置完成后返回到获取界面
+                        }
+                    });
+                   builderdialog.setNeutralButton("取消",new android.content.DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface arg0, int arg1) {
+                           arg0.dismiss();
+                       }
+                   } );
+                   builderdialog.show();
                 }
             } else {
                 new Thread() {
