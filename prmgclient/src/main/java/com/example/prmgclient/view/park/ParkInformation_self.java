@@ -27,7 +27,6 @@ import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
-import com.example.prmgclient.MainActivity;
 import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
@@ -51,7 +50,7 @@ public class ParkInformation_self extends Activity {
     TextView p_phone;
     TextView p_fee;
 
-    Location location;
+    Location location=null;
     ParkDetail parkDetail;
     /**
      * 以下为导航相关配置
@@ -90,64 +89,7 @@ public class ParkInformation_self extends Activity {
              */
             initNavi();
         }
-        // 获取位置管理服务
-        LocationManager locationManager;
-        String serviceName = Context.LOCATION_SERVICE;
-        locationManager = (LocationManager) this.getSystemService(serviceName);
-        // 查找到服务信息
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE); // 高精度
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
-        criteria.setPowerRequirement(Criteria.POWER_HIGH); // 低功耗
 
-        String provider = locationManager.getBestProvider(criteria, true); // 获取GPS信息
-
-        location = locationManager.getLastKnownLocation(provider); // 通过GPS获取位置
-        if (location == null) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-
-            System.out.println("网络位置" + location);
-        }
-        if (location == null) {
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    || !locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                /**
-                 *
-                 * 提示用户打开GPS
-                 */
-                AlertDialog.Builder builderdialog = new AlertDialog.Builder(this);
-                builderdialog.setMessage("请打开GPS");
-                builderdialog.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivityForResult(intent, 0); //此为设置完成后返回到获取界面
-                    }
-                });
-                builderdialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        arg0.dismiss();
-                    }
-                });
-                builderdialog.show();
-            }else{
-                Intent intent=new Intent(ParkInformation_self.this, MainActivity.class);
-                startActivity(intent);
-            }
 //            Intent gpsIntent = new Intent();
 //            gpsIntent.setClassName("com.Android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
 //            gpsIntent.addCategory("android.intent.category.ALTERNATIVE");
@@ -158,7 +100,7 @@ public class ParkInformation_self extends Activity {
 //                e.printStackTrace();
 //            }
 
-        }
+
     }
 
     @Override
@@ -345,21 +287,83 @@ public class ParkInformation_self extends Activity {
 //              //  bundle.putSerializable("end", end);
 //                intent.putExtra("end",end);
 //                startActivity(intent);
-                System.out.println("导航目标 ：" + parkDetail.getLongitude() + "  " + parkDetail.getLatitude());
-                /**
-                 * 判断百度导航是否初始化
-                 */
-                if (BaiduNaviManager.isNaviInited()) {
+                // 获取位置管理服务
+                LocationManager locationManager;
+                String serviceName = Context.LOCATION_SERVICE;
+                locationManager = (LocationManager) ParkInformation_self.this.getSystemService(serviceName);
+                // 查找到服务信息
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_FINE); // 高精度
+                criteria.setAltitudeRequired(false);
+                criteria.setBearingRequired(false);
+                criteria.setCostAllowed(true);
+                criteria.setPowerRequirement(Criteria.POWER_HIGH); // 低功耗
+
+                String provider = locationManager.getBestProvider(criteria, true); // 获取GPS信息
+
+                location = locationManager.getLastKnownLocation(provider); // 通过GPS获取位置
+                if (location == null) {
+                    if (ActivityCompat.checkSelfPermission(ParkInformation_self.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ParkInformation_self.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+
+                    System.out.println("网络位置" + location);
+                }
+                if (location == null) {
+                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                            || !locationManager
+                            .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        /**
+                         *
+                         * 提示用户打开GPS
+                         */
+                        AlertDialog.Builder builderdialog = new AlertDialog.Builder(ParkInformation_self.this);
+                        builderdialog.setMessage("请打开GPS");
+                        builderdialog.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivityForResult(intent, 0); //此为设置完成后返回到获取界面
+                            }
+                        });
+                        builderdialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                arg0.dismiss();
+                            }
+                        });
+                        builderdialog.show();
+                    }else{
+                        Toast.makeText(ParkInformation_self.this, "暂未获得当前位置，换个地方试试", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    System.out.println("导航目标 ：" + parkDetail.getLongitude() + "  " + parkDetail.getLatitude());
+
                     /**
-                     * 添加起点、终点
+                     * 判断百度导航是否初始化
                      */
-                    routeplanToNavi(BNRoutePlanNode.CoordinateType.WGS84);
+                    if (BaiduNaviManager.isNaviInited()) {
+                        /**
+                         * 添加起点、终点
+                         */
+                        routeplanToNavi(BNRoutePlanNode.CoordinateType.WGS84);
+                    }
                 }
             }
+
         });
+        }
 
 
-    }
+
 
     private void routeplanToNavi(BNRoutePlanNode.CoordinateType coType) {
         BNRoutePlanNode sNode = null;
