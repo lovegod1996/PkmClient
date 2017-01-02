@@ -2,7 +2,9 @@ package com.example.prmgclient.view.park;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -12,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -119,10 +120,30 @@ public class ParkInformation_self extends Activity {
             System.out.println("网络位置" + location);
         }
         if (location == null) {
-            Toast.makeText(this, "请开启GPS！", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
-            startActivityForResult(intent, 0); //此为设置完成后返回到获取界面
-
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    || !locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                /**
+                 *
+                 * 提示用户打开GPS
+                 */
+                AlertDialog.Builder builderdialog = new AlertDialog.Builder(this);
+                builderdialog.setMessage("请打开GPS");
+                builderdialog.setPositiveButton("确定", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, 0); //此为设置完成后返回到获取界面
+                    }
+                });
+                builderdialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        arg0.dismiss();
+                    }
+                });
+                builderdialog.show();
+            }
 //            Intent gpsIntent = new Intent();
 //            gpsIntent.setClassName("com.Android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
 //            gpsIntent.addCategory("android.intent.category.ALTERNATIVE");
