@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +52,6 @@ public class ParkInformation_self extends Activity {
     Location location;
     ParkDetail parkDetail;
     /**
-     *
      * 以下为导航相关配置
      */
     public static List<Activity> activityList = new LinkedList<Activity>();
@@ -61,7 +61,7 @@ public class ParkInformation_self extends Activity {
     private static final String APP_FOLDER_NAME = "intvehapp";
 
     /**
-     *导航按钮
+     * 导航按钮
      */
     Button btn_daohang;
     /**
@@ -118,7 +118,22 @@ public class ParkInformation_self extends Activity {
 
             System.out.println("网络位置" + location);
         }
+        if (location == null) {
+            Toast.makeText(this, "请开启GPS！", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+            startActivityForResult(intent, 0); //此为设置完成后返回到获取界面
 
+//            Intent gpsIntent = new Intent();
+//            gpsIntent.setClassName("com.Android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+//            gpsIntent.addCategory("android.intent.category.ALTERNATIVE");
+//            gpsIntent.setData(Uri.parse("custom:3"));
+//            try {
+//                PendingIntent.getBroadcast(ParkInformation_self.this, 0, gpsIntent, 0).send();
+//            } catch (PendingIntent.CanceledException e) {
+//                e.printStackTrace();
+//            }
+
+        }
     }
 
     @Override
@@ -126,7 +141,8 @@ public class ParkInformation_self extends Activity {
         super.onResume();
     }
 
-    String authinfo=null;
+    String authinfo = null;
+
     private void initNavi() {
         BNOuterTTSPlayerCallback ttsCallback = null;
 
@@ -163,8 +179,9 @@ public class ParkInformation_self extends Activity {
             }
 
 
-        },  null, ttsHandler, null);
+        }, null, ttsHandler, null);
     }
+
     /**
      * 导航设置管理器
      */
@@ -198,6 +215,7 @@ public class ParkInformation_self extends Activity {
 
     /**
      * 初始化SD卡，在SD卡路径下新建文件夹：App目录名，文件中包含了很多东西，比如log、cache等等
+     *
      * @return
      */
     private boolean initDirs() {
@@ -219,6 +237,7 @@ public class ParkInformation_self extends Activity {
 
     /**
      * 获取sd卡
+     *
      * @return
      */
     private String getSdcardDir() {
@@ -227,6 +246,7 @@ public class ParkInformation_self extends Activity {
         }
         return null;
     }
+
     /**
      * 内部TTS播报状态回传handler
      */
@@ -242,7 +262,7 @@ public class ParkInformation_self extends Activity {
                     showToastMsg("Handler : TTS play end");
                     break;
                 }
-                default :
+                default:
                     break;
             }
         }
@@ -259,21 +279,21 @@ public class ParkInformation_self extends Activity {
     }
 
     private void init() {
-        p_name=(TextView)findViewById(R.id.p_name);
-        p_lot=(TextView)findViewById(R.id.p_lot);
-        p_address=(TextView)findViewById(R.id.p_address);
-        p_phone=(TextView)findViewById(R.id.p_phone);
-        p_fee=(TextView)findViewById(R.id.p_fee);
+        p_name = (TextView) findViewById(R.id.p_name);
+        p_lot = (TextView) findViewById(R.id.p_lot);
+        p_address = (TextView) findViewById(R.id.p_address);
+        p_phone = (TextView) findViewById(R.id.p_phone);
+        p_fee = (TextView) findViewById(R.id.p_fee);
 
-        btn_daohang=(Button)findViewById(R.id.btn2);
+        btn_daohang = (Button) findViewById(R.id.btn2);
         btn_daohang.setVisibility(View.GONE);
 
-        t_title=(TextView)findViewById(R.id.text_title);
-        other=(ImageView)findViewById(R.id.button_other);
+        t_title = (TextView) findViewById(R.id.text_title);
+        other = (ImageView) findViewById(R.id.button_other);
         other.setVisibility(View.GONE);
-        back=(ImageView)findViewById(R.id.button_back);
+        back = (ImageView) findViewById(R.id.button_back);
 
-        parkDetail= (ParkDetail) this.getIntent().getSerializableExtra("parkdetail");
+        parkDetail = (ParkDetail) this.getIntent().getSerializableExtra("parkdetail");
         t_title.setText(parkDetail.getPname());
         p_name.setText(parkDetail.getPname());//-----------------------------
         p_address.setText(parkDetail.getAdress());
@@ -290,7 +310,7 @@ public class ParkInformation_self extends Activity {
             }
         });
 
-        btn_daohang.setOnClickListener(new OnClickListener(){
+        btn_daohang.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -300,7 +320,7 @@ public class ParkInformation_self extends Activity {
 //              //  bundle.putSerializable("end", end);
 //                intent.putExtra("end",end);
 //                startActivity(intent);
-                System.out.println("导航目标 ："+parkDetail.getLongitude()+ "  "+parkDetail.getLatitude());
+                System.out.println("导航目标 ：" + parkDetail.getLongitude() + "  " + parkDetail.getLatitude());
                 /**
                  * 判断百度导航是否初始化
                  */
@@ -312,7 +332,6 @@ public class ParkInformation_self extends Activity {
                 }
             }
         });
-
 
 
     }
@@ -354,10 +373,10 @@ public class ParkInformation_self extends Activity {
             BaiduNaviManager
                     .getInstance()
                     .launchNavigator(
-                            this,							//建议是应用的主Activity
-                            list,							//传入的算路节点，顺序是起点、途经点、终点，其中途经点最多三个
-                            1,								//算路偏好 1:推荐 8:少收费 2:高速优先 4:少走高速 16:躲避拥堵
-                            true,							//true表示真实GPS导航，false表示模拟导航
+                            this,                            //建议是应用的主Activity
+                            list,                            //传入的算路节点，顺序是起点、途经点、终点，其中途经点最多三个
+                            1,                                //算路偏好 1:推荐 8:少收费 2:高速优先 4:少走高速 16:躲避拥堵
+                            true,                            //true表示真实GPS导航，false表示模拟导航
                             new DemoRoutePlanListener(sNode)//开始导航回调监听器，在该监听器里一般是进入导航过程页面
                     );
         }
@@ -366,6 +385,7 @@ public class ParkInformation_self extends Activity {
 
     private class DemoRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
         private BNRoutePlanNode mBNRoutePlanNode = null;
+
         public DemoRoutePlanListener(BNRoutePlanNode sNode) {
             mBNRoutePlanNode = sNode;
         }
@@ -373,7 +393,7 @@ public class ParkInformation_self extends Activity {
         @Override
         public void onJumpToNavigator() {
 /*
-			 * 设置途径点以及resetEndNode会回调该接口
+             * 设置途径点以及resetEndNode会回调该接口
 			 */
 
             for (Activity ac : activityList) {
@@ -387,14 +407,14 @@ public class ParkInformation_self extends Activity {
              */
             Intent intent = new Intent(ParkInformation_self.this, ParkGuideActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ROUTE_PLAN_NODE,  mBNRoutePlanNode);
+            bundle.putSerializable(ROUTE_PLAN_NODE, mBNRoutePlanNode);
             intent.putExtras(bundle);
             startActivity(intent);
         }
 
         @Override
         public void onRoutePlanFailed() {
-         // TODO Auto-generated method stub
+            // TODO Auto-generated method stub
             Toast.makeText(ParkInformation_self.this, "算路失败", Toast.LENGTH_SHORT).show();
         }
     }
