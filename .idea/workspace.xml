@@ -11,10 +11,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e7cc6db-1c67-4451-963e-5f356a40de0b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/prmgclient/src/main/ic_launcher-web.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-hdpi/circle2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-hdpi/circle4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
@@ -24,33 +20,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_prmgclient_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_prmgclient_compileReleaseJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_prmgclient_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_prmgclient_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/prmgclient-release.apk" afterPath="$PROJECT_DIR$/prmgclient/prmgclient-release.apk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-hdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-mdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-xhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/mipmap-xxxhdpi/ic_launcher.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/prmgclient.iml" afterPath="$PROJECT_DIR$/prmgclient/prmgclient.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MainActivity.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/TitlebarActivity.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/TitlebarActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/Account_information.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/Account_information.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/Account_manage.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/Account_manage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/LoginActivity.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/RegisterActivity.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/RegisterActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/pre_registerActivity.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/pre_registerActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/guide/FindCarWei.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/guide/FindCarWei.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/inorout/GateInOut.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/inorout/GateInOut.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation_self.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation_self.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/record/PayMoney.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/record/PayMoney.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/record/PayMoney_self.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/record/PayMoney_self.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info_one.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info_one.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/layout/title_bar.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/layout/title_bar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/values/styles.xml" />
     </list>
     <ignored path="PkmClient.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,7 +58,34 @@
     <favorites_list name="PkmClient" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file leaf-file-name="ParkInformation.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="215">
+              <caret line="217" column="38" selection-start-line="217" selection-start-column="38" selection-end-line="217" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#5364#5380#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="park_info.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -1780,7 +1779,6 @@
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/LoginActivity.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/pre_registerActivity.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/RegisterActivity.java" />
-        <option value="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/record/PayMoney.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/record/PayMoney_self.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/inorout/GateInOut.java" />
@@ -1788,13 +1786,14 @@
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/Account_manage.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/account/Account_information.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MainActivity.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info_one.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation_self.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" />
+        <option value="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" />
+        <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" />
       </list>
     </option>
   </component>
@@ -2148,11 +2147,113 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="park" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2167,7 +2268,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="device.picker.selection" value="db33ca03" />
+    <property name="device.picker.selection" value="DU2TDM151T037827" />
     <property name="UI_DESIGNER_EDITOR_MODE.NlPaletteManager-NlPreviewForm.SHOW" value="false" />
     <property name="android.project.structure.last.selected" value="prmgclient" />
     <property name="android.project.structure.proportion" value="0.15" />
@@ -2617,7 +2718,14 @@
       <option name="project" value="LOCAL" />
       <updated>1482818226292</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="本次修改定位移至中心点BUg，修改布局以及返回键问题，修改应用图标等。。">
+      <created>1483332812606</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1483332812606</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2635,8 +2743,8 @@
     <layout>
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27843347" sideWeight="0.5132743" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.085480094" sideWeight="0.35354078" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.085480094" sideWeight="0.6464592" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38056207" sideWeight="0.35354078" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38056207" sideWeight="0.6464592" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2693,7 +2801,8 @@
     <MESSAGE value="添加自定义停车场位置填充，基本导航" />
     <MESSAGE value="完善百度地图相关图标位置以及排序等功能以及连接数据库等" />
     <MESSAGE value="添加百度地图导航sdk，并在测试机上测试通过，并已添加语音tts回播。完成起点和目标点经纬度标注病精确定位。" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加百度地图导航sdk，并在测试机上测试通过，并已添加语音tts回播。完成起点和目标点经纬度标注病精确定位。" />
+    <MESSAGE value="本次修改定位移至中心点BUg，修改布局以及返回键问题，修改应用图标等。。" />
+    <option name="LAST_COMMIT_MESSAGE" value="本次修改定位移至中心点BUg，修改布局以及返回键问题，修改应用图标等。。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2902,17 +3011,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="81" column="27" selection-start-line="81" selection-start-column="27" selection-end-line="81" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkGuideActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="597">
@@ -2989,21 +3087,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="82" column="22" selection-start-line="82" selection-start-column="22" selection-end-line="82" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4399#7929#0" expanded="true" />
-            <element signature="e#4696#7650#0" expanded="true" />
-            <element signature="e#5236#5252#0" expanded="true" />
-            <element signature="e#7649#7650#0" expanded="true" />
-            <element signature="e#7928#7929#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/prmgclient/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="275">
@@ -3071,7 +3154,7 @@
         <state relative-caret-position="275">
           <caret line="581" column="70" selection-start-line="581" selection-start-column="70" selection-end-line="581" selection-end-column="70" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3109,6 +3192,28 @@
           <caret line="326" column="22" selection-start-line="326" selection-start-column="22" selection-end-line="326" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="57" column="8" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="217" column="38" selection-start-line="217" selection-start-column="38" selection-end-line="217" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5364#5380#0" expanded="true" />
           </folding>
         </state>
       </provider>
