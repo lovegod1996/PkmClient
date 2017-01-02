@@ -58,17 +58,13 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--百度定位服务-->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" >
-        </service>
+
 
         <receiver android:name=".net.NetWorkReceiver">
             <intent-filter>
@@ -87,7 +83,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.park.ParkInformation" />
+        <activity
+            android:name=".view.park.ParkInformation"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".view.park.ParkInformation_self" />
         <activity android:name=".view.account.Account_information" />
         <activity android:name=".MainActivity" />
@@ -110,6 +108,11 @@
 
         <activity android:name=".view.map.Baidumap"></activity>
 
+        <!--百度定位服务-->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
     </application>
 
 </manifest>

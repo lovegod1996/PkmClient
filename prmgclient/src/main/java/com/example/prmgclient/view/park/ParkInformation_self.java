@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
+import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
 
@@ -38,14 +40,14 @@ import java.util.List;
  */
 public class ParkInformation_self extends Activity {
     TextView t_title;//标题栏
-    Button other;
-    Button back;
+    ImageView other;
+    ImageView back;
     TextView p_name;
     TextView p_lot;
     TextView p_address;
     TextView p_phone;
     TextView p_fee;
-    Button btn_route;
+
     Location location;
     ParkDetail parkDetail;
     /**
@@ -76,6 +78,7 @@ public class ParkInformation_self extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.park_info_one);
+        MyApplication.getInstance().addActivity(this);
         init();
         activityList.add(this);
 
@@ -261,14 +264,14 @@ public class ParkInformation_self extends Activity {
         p_address=(TextView)findViewById(R.id.p_address);
         p_phone=(TextView)findViewById(R.id.p_phone);
         p_fee=(TextView)findViewById(R.id.p_fee);
-        btn_route=(Button)findViewById(R.id.btn1);
+
         btn_daohang=(Button)findViewById(R.id.btn2);
         btn_daohang.setVisibility(View.GONE);
 
         t_title=(TextView)findViewById(R.id.text_title);
-        other=(Button)findViewById(R.id.button_other);
+        other=(ImageView)findViewById(R.id.button_other);
         other.setVisibility(View.GONE);
-        back=(Button)findViewById(R.id.button_back);
+        back=(ImageView)findViewById(R.id.button_back);
 
         parkDetail= (ParkDetail) this.getIntent().getSerializableExtra("parkdetail");
         t_title.setText(parkDetail.getPname());

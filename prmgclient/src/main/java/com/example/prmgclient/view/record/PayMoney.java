@@ -11,13 +11,14 @@ import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.prmgclient.MainActivity;
+import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.Record;
 import com.example.prmgclient.bean.User;
@@ -35,8 +36,8 @@ import java.util.Map;
 
 public class PayMoney extends Activity {
     TextView t_title;//������
-    Button other;
-    Button back;
+    ImageView other;
+    ImageView back;
     TextView balance;
     View relativelayout_w3;
     View relativelayout_w4;
@@ -76,6 +77,7 @@ public class PayMoney extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet);
+        MyApplication.getInstance().addActivity(this);
         mcache = HCache.get(this);
         init();
         addListener();
@@ -188,11 +190,11 @@ public class PayMoney extends Activity {
         t_title = (TextView) findViewById(R.id.text_title);
 
         t_title.setText("我的钱包");
-        other = (Button) findViewById(R.id.button_other);
+        other = (ImageView) findViewById(R.id.button_other);
         relativelayout_w3 = (View) findViewById(R.id.relativelayout_w3);
         relativelayout_w4 = (View) findViewById(R.id.relativelayout_w4);
         other.setVisibility(View.GONE);
-        back = (Button) findViewById(R.id.button_back);
+        back = (ImageView) findViewById(R.id.button_back);
         balance = (TextView) findViewById(R.id.balance);
         User user = (User) this.getIntent().getSerializableExtra("user");
         balance.setText(user.getMoney() + "元");

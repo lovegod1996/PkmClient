@@ -12,9 +12,11 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prmgclient.MainActivity;
+import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
 import com.example.prmgclient.engine.ParkEngineImpl;
@@ -36,8 +38,8 @@ import java.util.TimerTask;
 public class GateInOut extends Activity {
 
 	TextView t_title;
-	Button other;
-    Button back;
+	ImageView other;
+	ImageView back;
 	//TextView wifi_name;
 //	TextView wifi_du;
 	TextView welcome;
@@ -122,7 +124,7 @@ Handler handler=new Handler(){
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wifi_inout);
-
+		MyApplication.getInstance().addActivity(this);
 		init();
 
 		// ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -138,10 +140,10 @@ Handler handler=new Handler(){
 
 	public void init() {
 		t_title = (TextView) findViewById(R.id.text_title);
-		other = (Button) findViewById(R.id.button_other);
+		other = (ImageView) findViewById(R.id.button_other);
 		t_title.setText("进<——>出");
 		other.setVisibility(View.GONE);
-       back= (Button) findViewById(R.id.button_back);
+       back= (ImageView) findViewById(R.id.button_back);
 
 		we_name = (TextView) findViewById(R.id.we_name);
 		pa_time2 = (TextView) findViewById(R.id.pa_time2);

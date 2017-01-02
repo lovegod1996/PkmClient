@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.User;
 
@@ -22,8 +24,8 @@ public class Account_manage extends Activity
 	private ButtonOnClick buttonOnClick = new ButtonOnClick(1);
 	Button setting_user_sex;
 	TextView t_title;
-	Button other;
-	Button back;
+	ImageView other;
+	ImageView back;
 	
 	TextView user_number;
 	static TextView setting_user_name;
@@ -73,8 +75,8 @@ public class Account_manage extends Activity
 	public void init()
 	{
 		t_title=(TextView) findViewById(R.id.text_title);
-		other=(Button)findViewById(R.id.button_other);
-		back=(Button)findViewById(R.id.button_back);
+		other=(ImageView)findViewById(R.id.button_other);
+		back=(ImageView)findViewById(R.id.button_back);
 		
 		Layoutname=(View)findViewById(R.id.relativelayout_name);
 		user_number=(TextView)findViewById(R.id.user_number);
@@ -99,7 +101,8 @@ public class Account_manage extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.account_manage);			
+		setContentView(R.layout.account_manage);
+		MyApplication.getInstance().addActivity(this);
 		init();
 		/*back.setOnClickListener(new OnClickListener() {
 			

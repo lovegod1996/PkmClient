@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +30,8 @@ public class LoginActivity extends Activity {
     //TextView Show;    //�����ı�����ʾע����˺�
 
     TextView t_title;//����������
-    Button imageButton;//账户管理按钮
-    Button back;
+    ImageView imageButton;//账户管理按钮
+    ImageView back;
     static String name;
     static String password;
     ProgressDialog progressDialog;
@@ -94,10 +95,10 @@ public class LoginActivity extends Activity {
         Password = (EditText) findViewById(R.id.password);
         Login = (Button) findViewById(R.id.login);
         Register = (Button) findViewById(R.id.register);
-        back = (Button) findViewById(R.id.button_back);
+        back = (ImageView) findViewById(R.id.button_back);
         //   Show=(TextView) findViewById(R.id.show);
         t_title = (TextView) findViewById(R.id.text_title);
-        imageButton = (Button) findViewById(R.id.button_other);
+        imageButton = (ImageView) findViewById(R.id.button_other);
         if (sp.getBoolean("ISCHECK", false))  //��������
         {
             Account.setText(sp.getString("USER_NAME", ""));  //

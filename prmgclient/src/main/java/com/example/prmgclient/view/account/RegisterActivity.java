@@ -14,7 +14,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
+ import android.widget.ImageView;
+ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +38,8 @@ import com.example.prmgclient.util.NetWorkUtil;
 	EditText password2;
 	EditText car_number_shuzi;
 	TextView t_title;//����������
-	Button imageButton;//ImageButton
-	Button buttonback;
+	 ImageView imageButton;//ImageButton
+	 ImageView buttonback;
 	 ProgressDialog progressDialog;
 
 	Handler  handler=new Handler(){
@@ -153,8 +154,8 @@ import com.example.prmgclient.util.NetWorkUtil;
 		  ck_agreen= (CheckBox) findViewById(R.id.checkbox);
 
 	       t_title=(TextView) findViewById(R.id.text_title);
-	       imageButton = (Button) findViewById(R.id.button_other); 
-	       buttonback=(Button)findViewById(R.id.button_back);
+	       imageButton = (ImageView) findViewById(R.id.button_other);
+	       buttonback=(ImageView)findViewById(R.id.button_back);
 	       Intent intent = getIntent();  
 		     phone1 = intent.getStringExtra("phone");
 		         

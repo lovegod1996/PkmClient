@@ -148,7 +148,7 @@
                  android:layout_centerVertical="true"
                  android:layout_alignParentLeft="true"
                  android:layout_alignParentStart="true"
-                 android:layout_marginStart="35dp" />
+                  />
 
              <TextView
                 android:id="@+id/p_fee"
@@ -183,28 +183,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/zhanwei"
-                android:layout_height="45dp"
-                android:layout_width="1dp"
-                android:layout_centerHorizontal="true"/>
 
-            <Button
-                android:id="@+id/btn1"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@color/colorPrimary"
-                android:layout_toLeftOf="@id/zhanwei"
-                android:layout_alignParentLeft="true"
-                android:text="路线"
-                android:textSize="18dp"
-                android:layout_alignParentBottom="true"/>
             <Button
                 android:id="@+id/btn2"
                 android:background="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_toRightOf="@id/zhanwei"
+                android:textColor="#ffffff"
                 android:layout_alignParentRight="true"
                 android:text="导航"
                 android:textSize="18dp"

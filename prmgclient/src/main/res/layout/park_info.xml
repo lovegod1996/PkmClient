@@ -9,7 +9,7 @@
    <RelativeLayout 
         android:id="@+id/top"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:background="#F5F5F5"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">    
@@ -17,7 +17,7 @@
         <Button 
             android:id="@+id/search"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/park_info_search_btn_bg"
@@ -30,7 +30,7 @@
      <RelativeLayout
           android:id="@+id/searth_delete"
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:background="@drawable/park_info_edittext_bg"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
@@ -70,11 +70,31 @@
        android:layout_width="match_parent"
        android:layout_height="0.5dp"
        android:background="@color/devide_line" /> -->
-   <ListView
-       android:id="@+id/listView_park_name"
-       android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
-       android:background="#F5F5F5" >
-   </ListView>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+    <Button
+        android:id="@+id/go_to_map"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@mipmap/circle4"
+        android:text="地图导航"
+        android:textSize="18dp"
+        android:textColor="#ffffff"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="360dp" />
+
+        <ListView
+            android:id="@+id/listView_park_name"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#F5F5F5"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </ListView>
+    </RelativeLayout>
 
   </LinearLayout>

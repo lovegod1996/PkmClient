@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prmgclient.R;
@@ -14,8 +14,8 @@ import com.example.prmgclient.view.account.Account_information;
 
 public class TitlebarActivity extends Activity  {
 	  FrameLayout mContentLayout;
-	  Button back;
-	  Button other;
+	  ImageView back;
+    ImageView other;
 	  TextView t_title;
 
 	@Override  
@@ -41,8 +41,8 @@ public class TitlebarActivity extends Activity  {
 		// TODO Auto-generated method stub
 		super.setContentView(R.layout.actitvity_title);
 		t_title = (TextView) findViewById(R.id.text_title);         
-        back = (Button) findViewById(R.id.button_back);  
-        other = (Button) findViewById(R.id.button_other); 
+        back = (ImageView) findViewById(R.id.button_back);
+        other = (ImageView) findViewById(R.id.button_other);
         mContentLayout = (FrameLayout) findViewById(R.id.layout_content);
 	}
 

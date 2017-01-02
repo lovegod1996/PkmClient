@@ -64,6 +64,7 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.ParkDetail;
 import com.example.prmgclient.util.HCache;
@@ -126,11 +127,15 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
     //获取缓存数据
     HCache mcahe;
 
+    /*TextView t_title;
+    ImageView other;
+    ImageView back;*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.park_baidumap);
+        MyApplication.getInstance().addActivity(this);
         mcahe = HCache.get(this);
         try {
             parkDetailList = (List<ParkDetail>) this.getIntent().getSerializableExtra("parkDetailList");
@@ -150,7 +155,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
 /*ActionBar actionBar=getActionBar();
         actionBar.setTitle("查找停车场");*/
 
-        mCurrentMode = LocationMode.COMPASS;
+        mCurrentMode = LocationMode.NORMAL;
         bmapview = (MapView) findViewById(R.id.bmapView);
 
         listview1 = (ListView) findViewById(R.id.listview1);//列表
@@ -165,7 +170,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(2000);
+        option.setScanSpan(5000);
         option.setIsNeedAddress(true);
         option.setNeedDeviceDirect(true);
         option.setOpenAutoNotifyMode(5000,5,LocationClientOption.LOC_SENSITIVITY_HIGHT);
@@ -178,42 +183,6 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         System.out.println(option.getScanSpan());
         System.out.println(option.getLocationMode());
 
-//        end = this.getIntent().getDoubleArrayExtra("end");
-
-        /**
-         * 一下部分纯属测试
-         */
-      /*  locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        List<String> list = locationManager.getProviders(true);
-        if (list.contains(LocationManager.GPS_PROVIDER)) {
-            provider = LocationManager.GPS_PROVIDER;
-        } else if (list.contains(LocationManager.NETWORK_PROVIDER)) {
-            provider = LocationManager.NETWORK_PROVIDER;
-
-        } else {
-            Toast.makeText(this, "当前不能提供位置信息", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = locationManager.getLastKnownLocation(provider);
-        if (location != null) {
-            navigateTo(location);
-        }
-
-        locationManager.requestLocationUpdates(provider, 5000, 1,
-                locationListener);*/
-/**
- * 以上为测试
- */
 
 
         init();//对话框and三图
@@ -265,63 +234,6 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
 
     }
 
-  /*  private void navigateTo(Location location) {
-        if (location == null || bmapview == null) {
-            System.out.println("kongk");
-            return;
-        }
-        // 显示个人位置图标
-        MyLocationData.Builder builder = new MyLocationData.Builder();
-        builder.latitude(location.getLatitude());
-        builder.longitude(location.getLongitude());
-        MyLocationData data = builder.build();
-        mbaidmap.setMyLocationData(data);
-        center = new LatLng(location.getLatitude(), location.getLongitude());
-        initmark(center);//添加标注点信息
-        //    showNearbyArea(center, 1300);//绘制搜索范围
-        mbaidmap.setMyLocationData(data);
-        mbaidmap.animateMapStatus(MapStatusUpdateFactory.newLatLng(center));
-        if (isFirstLoc) {
-            LatLng ll = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(ll);
-            // 移动到某经纬度
-            mbaidmap.animateMapStatus(update);
-            update = MapStatusUpdateFactory.zoomBy(5f);
-            // 放大
-            mbaidmap.animateMapStatus(update);
-            isFirstLoc = false;
-        }
-    }
-
-    LocationListener locationListener = new LocationListener() {
-
-        @Override
-        public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onProviderEnabled(String arg0) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onProviderDisabled(String arg0) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onLocationChanged(Location arg0) {
-            // TODO Auto-generated method stub
-            // 位置改变则重新定位并显示地图
-            navigateTo(arg0);
-        }
-    };
-*/
 
     private void init() {
         // TODO Auto-generated method stub
@@ -329,7 +241,11 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
         realtime_traffic = (ImageView) findViewById(R.id.realtime_traffic);
         satellite_map = (ImageView) findViewById(R.id.satellite_map);
         location_map = (ImageView) findViewById(R.id.location_map);
-
+       /* t_title=(TextView) findViewById(R.id.text_title);
+        other = (ImageView) findViewById(R.id.button_other);
+        back=(ImageView)findViewById(R.id.button_back);
+        t_title.setText("地图导航");
+        other.setVisibility(View.INVISIBLE);*/
 
         //对话框
         parkDialog = new Dialog(this, R.style.map_dialog);
@@ -356,7 +272,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
     }
 
     //对话框的点击事件
-    private View.OnClickListener dialoglistener = new View.OnClickListener() {
+    private OnClickListener dialoglistener = new OnClickListener() {
 
         public void onClick(View v) {
             // TODO Auto-generated method stub
@@ -464,6 +380,7 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                 bundle.putSerializable("parkDetail", parkDetail);
                 Marker marker1 = (Marker) (mbaidmap.addOverlay(optionA));
                 marker1.setExtraInfo(bundle);
+                marker1.setPerspective(false);
                 markerlist.add(marker1);
                 count++;
                 arr1.add(count + "、" + optionA.getTitle() + "  距离：" + (int) llsort[i] + "米");
@@ -654,10 +571,13 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                   /*     BitmapDescriptor da = BitmapDescriptorFactory.fromResource(R.mipmap.marker2);
+
+                      /* BitmapDescriptor da = BitmapDescriptorFactory.fromResource(R.mipmap.marker2);
                         OverlayOptions option = new MarkerOptions().position(nodeLocation).icon(da);
-                        Marker  marker_node=(Marker) (mbaidmap.addOverlay(option));
-                        marker_node.setPerspective(true);*/
+                        Marker marker_node=(Marker) (mbaidmap.addOverlay(option));
+                        marker_node.setPerspective(true);
+                        mbaidmap.setMapStatus(MapStatusUpdateFactory.newLatLng(nodeLocation));
+                        mbaidmap.setMapStatus(MapStatusUpdateFactory.zoomTo(18));*/
                         mbaidmap.setMapStatus(MapStatusUpdateFactory.newLatLng(nodeLocation));
                         mbaidmap.setMapStatus(MapStatusUpdateFactory.zoomTo(18));
 
@@ -750,17 +670,19 @@ public class Park_baidu_Map extends Activity implements OnGetRoutePlanResultList
             center = new LatLng(locData.latitude, locData.longitude);
             System.out.println(locData.latitude + "  " + locData.longitude);
 
-            initmark(center);//添加标注点信息
+           // initmark(center);//添加标注点信息
             //    showNearbyArea(center, 1300);//绘制搜索范围
 
             System.out.println(locData.latitude + "第一个" + locData.longitude);
             mbaidmap.setMyLocationData(locData);
-            mbaidmap.animateMapStatus(MapStatusUpdateFactory.newLatLng(center));
+
+
+          //  mbaidmap.animateMapStatus(MapStatusUpdateFactory.newLatLng(center));
             if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
-
+                initmark(ll);//添加标注点信息
                 System.err.println(ll.latitude + " " + ll.longitude);
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);

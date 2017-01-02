@@ -9,7 +9,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prmgclient.MainActivity;
+import com.example.prmgclient.MyApplication;
 import com.example.prmgclient.R;
 import com.example.prmgclient.bean.Record;
 import com.example.prmgclient.engine.RecordEngineImpl;
@@ -44,8 +45,8 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
 	TextView time_end;
 	
 	TextView t_title;
-	Button other;
-	Button back;
+	ImageView other;
+	ImageView back;
 	ListView list;
 
 	SharedPreferences sp ;
@@ -77,6 +78,7 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
      protected void onCreate(Bundle savedInstanceState){
     	  super.onCreate(savedInstanceState);
     	  setContentView(R.layout.payment_records);
+		 MyApplication.getInstance().addActivity(this);
     	  init();
 
 		 recordList= (List<Record>) this.getIntent().getSerializableExtra("recordList");
@@ -118,8 +120,8 @@ public class PayMoney_self extends Activity implements SwipeRefreshLayout.OnRefr
 	private void init() {
 		// TODO Auto-generated method stub
 	      t_title=(TextView) findViewById(R.id.text_title);
-	      other=(Button)findViewById(R.id.button_other);
-	      back=(Button)findViewById(R.id.button_back);
+	      other=(ImageView)findViewById(R.id.button_other);
+	      back=(ImageView)findViewById(R.id.button_back);
 	      t_title.setText("缴费记录");
 	      other.setVisibility(View.GONE);
 	      

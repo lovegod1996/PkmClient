@@ -23,8 +23,8 @@ public class pre_registerActivity extends Activity implements OnClickListener{
 	  String realCode;	//��������֤��		
 	  Button button_next;//��һ���İ�ť��������һ������	  
 	  TextView t_title;//������
-	  Button imageButton;//ImageButton
-	  Button back_back;
+	ImageView imageButton;//ImageButton
+	ImageView back_back;
 	  
 	  
 	  public void init()
@@ -34,8 +34,8 @@ public class pre_registerActivity extends Activity implements OnClickListener{
 			iv_showCode = (ImageView) findViewById(R.id.iv_showCode);//����֤����ͼƬ����ʽ��ʾ����
 	        button_next=(Button)findViewById(R.id.button_next);//����һ������ť        
 	        t_title = (TextView) findViewById(R.id.text_title); 
-	        imageButton = (Button) findViewById(R.id.button_other); 
-	        back_back=(Button)findViewById(R.id.button_back);
+	        imageButton = (ImageView) findViewById(R.id.button_other);
+	        back_back=(ImageView)findViewById(R.id.button_back);
 	        t_title.setText("注册页面");
 	        imageButton.setVisibility(View.GONE);	
 	        
