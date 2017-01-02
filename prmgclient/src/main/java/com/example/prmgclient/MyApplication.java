@@ -3,6 +3,8 @@ package com.example.prmgclient;
 import android.app.Activity;
 import android.app.Application;
 
+import com.baidu.mapapi.SDKInitializer;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,5 +55,11 @@ public class MyApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         System.gc();//启动系统VM垃圾回收线程
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        SDKInitializer.initialize(getApplicationContext());
     }
 }

@@ -21,8 +21,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_prmgclient_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_prmgclient_compileReleaseJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/prmgclient-release.apk" afterPath="$PROJECT_DIR$/prmgclient/prmgclient-release.apk" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" afterPath="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" afterPath="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" />
     </list>
     <ignored path="PkmClient.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,15 +59,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ParkInformation.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ParkInformation.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="217" column="38" selection-start-line="217" selection-start-column="38" selection-end-line="217" selection-end-column="38" />
+            <state relative-caret-position="190">
+              <caret line="216" column="50" selection-start-line="216" selection-start-column="50" selection-end-line="216" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5364#5380#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyApplication.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Park_baidu_Map.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="133" column="43" selection-start-line="133" selection-start-column="43" selection-end-line="133" selection-end-column="43" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1743,7 +1763,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/util/CheckThresholdAsyncTask.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/util/SHAUtil.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/engine/UserEngineImpl.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/util/NetWorkUtil.java" />
@@ -1791,9 +1810,10 @@
         <option value="$PROJECT_DIR$/prmgclient/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info_one.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation_self.java" />
-        <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/res/layout/park_info.xml" />
         <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java" />
+        <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java" />
+        <option value="$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java" />
       </list>
     </option>
   </component>
@@ -2254,6 +2274,44 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="park" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PkmClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="prmgclient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="map" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2725,7 +2783,14 @@
       <option name="project" value="LOCAL" />
       <updated>1483332812606</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="修改bug">
+      <created>1483339251104</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1483339251104</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2802,7 +2867,8 @@
     <MESSAGE value="完善百度地图相关图标位置以及排序等功能以及连接数据库等" />
     <MESSAGE value="添加百度地图导航sdk，并在测试机上测试通过，并已添加语音tts回播。完成起点和目标点经纬度标注病精确定位。" />
     <MESSAGE value="本次修改定位移至中心点BUg，修改布局以及返回键问题，修改应用图标等。。" />
-    <option name="LAST_COMMIT_MESSAGE" value="本次修改定位移至中心点BUg，修改布局以及返回键问题，修改应用图标等。。" />
+    <MESSAGE value="修改bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3149,16 +3215,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="581" column="70" selection-start-line="581" selection-start-column="70" selection-end-line="581" selection-end-column="70" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/prmgclient/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -3174,14 +3230,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
           <caret line="191" column="42" selection-start-line="191" selection-start-column="42" selection-end-line="191" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -3209,12 +3257,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/park/ParkInformation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="217" column="38" selection-start-line="217" selection-start-column="38" selection-end-line="217" selection-end-column="38" />
+        <state relative-caret-position="190">
+          <caret line="216" column="50" selection-start-line="216" selection-start-column="50" selection-end-line="216" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5364#5380#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/view/map/Park_baidu_Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="133" column="43" selection-start-line="133" selection-start-column="43" selection-end-line="133" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prmgclient/src/main/java/com/example/prmgclient/MyApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
